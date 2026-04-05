@@ -226,6 +226,7 @@
     }
   };
 
+  // Escuta mudanças em tempo real
   onSnapshot(col, (snapshot) => {
     veiculos = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     veiculos.sort((a, b) => a.placa.localeCompare(b.placa));
