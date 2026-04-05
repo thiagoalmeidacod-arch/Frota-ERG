@@ -3,81 +3,207 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Painel de Frota</title>
+<title>Painel de Frota — ERG Engenharia</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
+    --erg-blue: #1a3a5c;
+    --erg-orange: #e07020;
+    --erg-blue-light: #2a5080;
     --font-sans: system-ui, -apple-system, sans-serif;
-    --color-background-primary: #ffffff;
-    --color-background-secondary: #f5f5f5;
-    --color-text-primary: #1a1a1a;
-    --color-text-secondary: #6b6b6b;
-    --color-border-tertiary: rgba(0,0,0,0.12);
-    --color-border-secondary: rgba(0,0,0,0.2);
-    --color-border-primary: rgba(0,0,0,0.3);
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-background-primary: #1e1e1e;
-      --color-background-secondary: #2a2a2a;
-      --color-text-primary: #f0f0f0;
-      --color-text-secondary: #a0a0a0;
-      --color-border-tertiary: rgba(255,255,255,0.1);
-      --color-border-secondary: rgba(255,255,255,0.18);
-      --color-border-primary: rgba(255,255,255,0.28);
-    }
+  body { font-family: var(--font-sans); background: #f0f2f5; min-height: 100vh; }
+
+  /* HEADER */
+  .header {
+    background: var(--erg-blue);
+    padding: 0;
+    border-bottom: 4px solid var(--erg-orange);
   }
-  body { font-family: var(--font-sans); background: var(--color-background-secondary); min-height: 100vh; }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-logo img {
+    height: 52px;
+    border-radius: 6px;
+  }
+  .header-title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .header-title span {
+    color: var(--erg-orange);
+  }
+  .header-clock {
+    color: rgba(255,255,255,0.75);
+    font-size: 12px;
+    text-align: right;
+  }
+
+  /* BODY */
   .wrap { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
-  .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 8px; }
-  .title { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
-  .clock { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
-  .summary { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-  .badge { font-size: 12px; padding: 4px 12px; border-radius: var(--border-radius-md); font-weight: 500; }
-  .badge-disp { background: #EAF3DE; color: #3B6D11; }
+
+  /* SUMMARY */
+  .summary-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .summary-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge { font-size: 13px; padding: 5px 14px; border-radius: 8px; font-weight: 500; }
+  .badge-disp { background: #EAF3DE; color: #2d5a0e; }
   .badge-manut { background: #FCEBEB; color: #A32D2D; }
+
+  /* GRID */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-  .card { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1rem 1.25rem; cursor: pointer; transition: border 0.15s; }
-  .card:hover { border: 0.5px solid var(--color-border-primary); }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 0.5px solid rgba(0,0,0,0.1);
+    border-top: 3px solid var(--erg-blue);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .card:hover { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
+  .card.manut { border-top-color: #E24B4A; }
+  .card.manut:hover { border-top-color: #A32D2D; }
   .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .card-placa { font-size: 15px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.5px; }
-  .tag { font-size: 11px; padding: 3px 9px; border-radius: var(--border-radius-md); font-weight: 500; }
-  .tag-disp { background: #EAF3DE; color: #3B6D11; }
-  .tag-manut { background: #FCEBEB; color: #A32D2D; }
-  .card-info { font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
-  .card-info span { color: var(--color-text-primary); font-weight: 500; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .card-placa { font-size: 15px; font-weight: 600; color: var(--erg-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot-disp { background: #639922; }
   .dot-manut { background: #E24B4A; }
-  .add-btn { margin-top: 1.25rem; display: flex; justify-content: center; }
-  button.add { font-size: 13px; padding: 8px 22px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); cursor: pointer; font-family: var(--font-sans); }
-  button.add:hover { background: var(--color-background-secondary); }
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 100; }
-  .modal { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1.5rem; width: 320px; max-width: 95vw; }
-  .modal h2 { font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
+  .tag-disp { background: #EAF3DE; color: #3B6D11; }
+  .tag-manut { background: #FCEBEB; color: #A32D2D; }
+  .card-info { font-size: 12px; color: #666; line-height: 1.8; }
+  .card-info span { color: #1a1a1a; font-weight: 500; }
+
+  /* ADD BUTTON */
+  .add-btn { margin-top: 1.5rem; display: flex; justify-content: center; }
+  button.add {
+    font-size: 13px;
+    padding: 9px 24px;
+    border-radius: 8px;
+    border: 1.5px solid var(--erg-orange);
+    background: transparent;
+    color: var(--erg-orange);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  button.add:hover { background: rgba(224,112,32,0.08); }
+
+  /* STATUS BAR */
+  .status-bar { font-size: 11px; color: #999; text-align: center; margin-top: 1rem; }
+  .loading { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
+
+  /* MODAL */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    border-top: 4px solid var(--erg-orange);
+    padding: 1.5rem;
+    width: 330px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+  .modal h2 { font-size: 16px; font-weight: 600; margin-bottom: 1rem; color: var(--erg-blue); }
   .field { margin-bottom: 12px; }
-  .field label { display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
-  .field input, .field select { width: 100%; padding: 7px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 13px; background: var(--color-background-primary); color: var(--color-text-primary); font-family: var(--font-sans); }
+  .field label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; font-weight: 500; }
+  .field input, .field select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    background: #fff;
+    color: #1a1a1a;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--erg-blue); }
   .modal-btns { display: flex; gap: 8px; margin-top: 1.25rem; }
-  .btn-save { flex: 1; background: var(--color-background-primary); border: 0.5px solid var(--color-border-primary); border-radius: var(--border-radius-md); padding: 8px; font-size: 13px; cursor: pointer; font-weight: 500; color: var(--color-text-primary); font-family: var(--font-sans); }
-  .btn-save:hover { background: var(--color-background-secondary); }
-  .btn-del { padding: 8px 14px; background: transparent; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 13px; cursor: pointer; color: #A32D2D; font-family: var(--font-sans); }
-  .btn-del:hover { background: #FCEBEB; }
-  .btn-cancel { padding: 8px 14px; background: transparent; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 13px; cursor: pointer; color: var(--color-text-secondary); font-family: var(--font-sans); }
-  .status-bar { font-size: 11px; color: var(--color-text-secondary); text-align: center; margin-top: 1rem; }
-  .loading { text-align: center; padding: 2rem; color: var(--color-text-secondary); font-size: 14px; }
+  .btn-save {
+    flex: 1;
+    background: var(--erg-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 9px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    font-family: var(--font-sans);
+    transition: background 0.15s;
+  }
+  .btn-save:hover { background: var(--erg-blue-light); }
+  .btn-del {
+    padding: 9px 14px;
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #A32D2D;
+    font-family: var(--font-sans);
+  }
+  .btn-del:hover { background: #FCEBEB; border-color: #f09595; }
+  .btn-cancel {
+    padding: 9px 14px;
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #666;
+    font-family: var(--font-sans);
+  }
+  .btn-cancel:hover { background: #f5f5f5; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div>
-      <div class="title">Painel de frota</div>
-      <div class="clock" id="clock"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="https://thiagoalmeidacod-arch.github.io/Frota-ERG/logo.png" alt="ERG" onerror="this.style.display='none'" />
+      <div>
+        <div class="header-title">Painel de <span>Frota</span></div>
+        <div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:2px;">ERG Engenharia · Meio Ambiente · Geotecnologias</div>
+      </div>
     </div>
-    <div class="summary" id="summary"></div>
+    <div class="header-clock" id="clock"></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="wrap">
+  <div class="summary-row">
+    <div class="summary-badges" id="summary"></div>
   </div>
   <div id="grid" class="grid"><div class="loading">Carregando veículos...</div></div>
   <div class="add-btn">
@@ -139,15 +265,15 @@
     document.getElementById('grid').innerHTML = veiculos.map(v => {
       const isMaut = v.status === 'manutencao';
       const dias = isMaut ? diasDesde(v.desde) : '';
-      return '<div class="card" onclick="window._openEdit(\'' + v.id + '\')">' +
+      return '<div class="card' + (isMaut ? ' manut' : '') + '" onclick="window._openEdit(\'' + v.id + '\')">' +
         '<div class="card-header">' +
           '<span class="card-placa"><span class="dot ' + (isMaut ? 'dot-manut' : 'dot-disp') + '"></span>' + v.placa + '</span>' +
           '<span class="tag ' + (isMaut ? 'tag-manut' : 'tag-disp') + '">' + (isMaut ? 'Manutenção' : 'Disponível') + '</span>' +
         '</div>' +
         '<div class="card-info">' +
           (isMaut && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
-          (isMaut && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:var(--color-text-secondary)">(' + dias + ')</span>' : '') + '<br>' : '') +
-          (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (isMaut ? '' : '<span style="color:var(--color-text-secondary)">Sem ocorrências</span>')) +
+          (isMaut && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
+          (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (isMaut ? '' : '<span style="color:#aaa">Sem ocorrências</span>')) +
         '</div>' +
       '</div>';
     }).join('');
@@ -226,21 +352,21 @@
     }
   };
 
-  // Escuta mudanças em tempo real
   onSnapshot(col, (snapshot) => {
     veiculos = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     veiculos.sort((a, b) => a.placa.localeCompare(b.placa));
     render();
-    document.getElementById('status-bar').textContent = 'Atualizado em tempo real · ' + veiculos.length + ' veículo' + (veiculos.length !== 1 ? 's' : '') + ' cadastrado' + (veiculos.length !== 1 ? 's' : '');
+    document.getElementById('status-bar').textContent =
+      'Atualizado em tempo real · ' + veiculos.length + ' veículo' + (veiculos.length !== 1 ? 's' : '') + ' cadastrado' + (veiculos.length !== 1 ? 's' : '');
   }, (error) => {
     document.getElementById('status-bar').textContent = 'Erro de conexão: ' + error.message;
   });
 
   function updateClock() {
     const now = new Date();
-    document.getElementById('clock').textContent =
+    document.getElementById('clock').innerHTML =
       now.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) +
-      ' · ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      '<br>' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
   updateClock();
   setInterval(updateClock, 60000);
