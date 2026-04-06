@@ -45,9 +45,10 @@
     align-items: center;
   }
   .badge { font-size: 13px; padding: 5px 14px; border-radius: 8px; font-weight: 500; }
-  .badge-disp { background: #EAF3DE; color: #2d5a0e; }
+  .badge-disp  { background: #EAF3DE; color: #2d5a0e; }
   .badge-manut { background: #FCEBEB; color: #A32D2D; }
   .badge-mobil { background: #FEF3CD; color: #7a5200; }
+  .badge-agend { background: #DFF3E3; color: #1a6630; }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 
@@ -60,103 +61,72 @@
     cursor: pointer;
     transition: box-shadow 0.15s, border-color 0.15s;
   }
-  .card:hover { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
-  .card.manut { border-top-color: #E24B4A; }
-  .card.manut:hover { border-top-color: #A32D2D; }
-  .card.mobil { border-top-color: #f0b429; }
-  .card.mobil:hover { border-top-color: #c88a00; }
+  .card:hover        { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
+  .card.manut        { border-top-color: #E24B4A; }
+  .card.manut:hover  { border-top-color: #A32D2D; }
+  .card.mobil        { border-top-color: #f0b429; }
+  .card.mobil:hover  { border-top-color: #c88a00; }
+  .card.agend        { border-top-color: #3aad5c; }
+  .card.agend:hover  { border-top-color: #1a6630; }
 
   .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .card-placa { font-size: 15px; font-weight: 600; color: var(--erg-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .dot-disp { background: #639922; }
-  .dot-manut { background: #E24B4A; }
-  .dot-mobil { background: #f0b429; }
-  .tag { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
-  .tag-disp { background: #EAF3DE; color: #3B6D11; }
-  .tag-manut { background: #FCEBEB; color: #A32D2D; }
-  .tag-mobil { background: #FEF3CD; color: #7a5200; }
-  .card-info { font-size: 12px; color: #666; line-height: 1.8; }
+  .card-placa  { font-size: 15px; font-weight: 600; color: var(--erg-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+  .dot         { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-disp    { background: #639922; }
+  .dot-manut   { background: #E24B4A; }
+  .dot-mobil   { background: #f0b429; }
+  .dot-agend   { background: #3aad5c; }
+  .tag         { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
+  .tag-disp    { background: #EAF3DE; color: #3B6D11; }
+  .tag-manut   { background: #FCEBEB; color: #A32D2D; }
+  .tag-mobil   { background: #FEF3CD; color: #7a5200; }
+  .tag-agend   { background: #DFF3E3; color: #1a6630; }
+  .card-info   { font-size: 12px; color: #666; line-height: 1.8; }
   .card-info span { color: #1a1a1a; font-weight: 500; }
 
   .add-btn { margin-top: 1.5rem; display: flex; justify-content: center; }
   button.add {
-    font-size: 13px;
-    padding: 9px 24px;
-    border-radius: 8px;
-    border: 1.5px solid var(--erg-orange);
-    background: transparent;
-    color: var(--erg-orange);
-    cursor: pointer;
-    font-family: var(--font-sans);
-    font-weight: 500;
-    transition: background 0.15s;
+    font-size: 13px; padding: 9px 24px; border-radius: 8px;
+    border: 1.5px solid var(--erg-orange); background: transparent;
+    color: var(--erg-orange); cursor: pointer; font-family: var(--font-sans);
+    font-weight: 500; transition: background 0.15s;
   }
   button.add:hover { background: rgba(224,112,32,0.08); }
 
   .status-bar { font-size: 11px; color: #999; text-align: center; margin-top: 1rem; }
-  .loading { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
+  .loading    { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
 
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
   .modal {
-    background: #fff;
-    border-radius: 12px;
-    border-top: 4px solid var(--erg-orange);
-    padding: 1.5rem;
-    width: 330px;
-    max-width: 95vw;
+    background: #fff; border-radius: 12px; border-top: 4px solid var(--erg-orange);
+    padding: 1.5rem; width: 330px; max-width: 95vw;
     box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   }
   .modal h2 { font-size: 16px; font-weight: 600; margin-bottom: 1rem; color: var(--erg-blue); }
   .field { margin-bottom: 12px; }
   .field label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; font-weight: 500; }
   .field input, .field select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 13px;
-    background: #fff;
-    color: #1a1a1a;
-    font-family: var(--font-sans);
-    outline: none;
-    transition: border-color 0.15s;
+    width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px;
+    font-size: 13px; background: #fff; color: #1a1a1a; font-family: var(--font-sans);
+    outline: none; transition: border-color 0.15s;
   }
   .field input:focus, .field select:focus { border-color: var(--erg-blue); }
   .modal-btns { display: flex; gap: 8px; margin-top: 1.25rem; }
   .btn-save {
-    flex: 1;
-    background: var(--erg-blue);
-    border: none;
-    border-radius: 8px;
-    padding: 9px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #fff;
-    font-family: var(--font-sans);
-    transition: background 0.15s;
+    flex: 1; background: var(--erg-blue); border: none; border-radius: 8px;
+    padding: 9px; font-size: 13px; cursor: pointer; font-weight: 600; color: #fff;
+    font-family: var(--font-sans); transition: background 0.15s;
   }
   .btn-save:hover { background: var(--erg-blue-light); }
   .btn-del {
-    padding: 9px 14px;
-    background: transparent;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #A32D2D;
+    padding: 9px 14px; background: transparent; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 13px; cursor: pointer; color: #A32D2D;
     font-family: var(--font-sans);
   }
   .btn-del:hover { background: #FCEBEB; border-color: #f09595; }
   .btn-cancel {
-    padding: 9px 14px;
-    background: transparent;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #666;
+    padding: 9px 14px; background: transparent; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 13px; cursor: pointer; color: #666;
     font-family: var(--font-sans);
   }
   .btn-cancel:hover { background: #f5f5f5; }
@@ -190,7 +160,8 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+  import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc }
+    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBWurnJOeq29n0NncjnLlf_krpq19vPIkM",
@@ -202,15 +173,15 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const db  = getFirestore(app);
   const col = collection(db, "veiculos");
 
   let veiculos = [];
-  let editId = null;
+  let editId   = null;
 
   function diasDesde(data) {
     if (!data) return '';
-    const d = new Date(data + 'T00:00:00');
+    const d    = new Date(data + 'T00:00:00');
     const hoje = new Date(); hoje.setHours(0,0,0,0);
     const diff = Math.round((hoje - d) / 86400000);
     if (diff === 0) return 'hoje';
@@ -225,20 +196,23 @@
   }
 
   function getStatusInfo(status) {
-    if (status === 'manutencao') return { label: 'Manutenção', tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
-    if (status === 'mobilizacao') return { label: 'Em mobilização', tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
-    return { label: 'Disponível', tagClass: 'tag-disp', dotClass: 'dot-disp', cardClass: '' };
+    if (status === 'manutencao')   return { label: 'Manutenção',         tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
+    if (status === 'mobilizacao')  return { label: 'Em mobilização',     tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
+    if (status === 'agendado')     return { label: 'Manut. Agendada',    tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
+    return                                { label: 'Disponível',         tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
   }
 
   function render() {
-    const dispN = veiculos.filter(v => v.status === 'disponivel').length;
-    const mautN = veiculos.filter(v => v.status === 'manutencao').length;
+    const dispN  = veiculos.filter(v => v.status === 'disponivel').length;
+    const mautN  = veiculos.filter(v => v.status === 'manutencao').length;
     const mobilN = veiculos.filter(v => v.status === 'mobilizacao').length;
+    const agendN = veiculos.filter(v => v.status === 'agendado').length;
 
-    let badges = '<span class="badge badge-disp">' + dispN + ' disponível' + (dispN !== 1 ? 'is' : '') + '</span>';
-    badges += '<span class="badge badge-manut">' + mautN + ' em manutenção</span>';
-    badges += '<span class="badge badge-mobil">' + mobilN + ' em mobilização</span>';
-    document.getElementById('summary').innerHTML = badges;
+    document.getElementById('summary').innerHTML =
+      '<span class="badge badge-disp">'  + dispN  + (dispN  === 1 ? ' disponível'         : ' disponíveis')        + '</span>' +
+      '<span class="badge badge-manut">' + mautN  + (mautN  === 1 ? ' em manutenção'      : ' em manutenção')      + '</span>' +
+      '<span class="badge badge-mobil">' + mobilN + (mobilN === 1 ? ' em mobilização'     : ' em mobilização')     + '</span>' +
+      '<span class="badge badge-agend">' + agendN + (agendN === 1 ? ' manut. agendada'    : ' manut. agendadas')   + '</span>';
 
     if (veiculos.length === 0) {
       document.getElementById('grid').innerHTML = '<div class="loading">Nenhum veículo cadastrado. Clique em "+ Adicionar veículo" para começar.</div>';
@@ -247,7 +221,8 @@
 
     document.getElementById('grid').innerHTML = veiculos.map(v => {
       const info = getStatusInfo(v.status);
-      const dias = (v.status === 'manutencao' || v.status === 'mobilizacao') ? diasDesde(v.desde) : '';
+      const temData = v.status === 'manutencao' || v.status === 'mobilizacao' || v.status === 'agendado';
+      const dias = temData ? diasDesde(v.desde) : '';
       return '<div class="card ' + info.cardClass + '" onclick="window._openEdit(\'' + v.id + '\')">' +
         '<div class="card-header">' +
           '<span class="card-placa"><span class="dot ' + info.dotClass + '"></span>' + v.placa + '</span>' +
@@ -255,8 +230,9 @@
         '</div>' +
         '<div class="card-info">' +
           (v.status === 'manutencao' && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
-          (v.status === 'mobilizacao' && v.cc ? 'C. Custo: <span>' + v.cc + '</span><br>' : '') +
-          ((v.status === 'manutencao' || v.status === 'mobilizacao') && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
+          (v.status === 'agendado'   && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
+          (v.status === 'mobilizacao' && v.cc   ? 'C. Custo: <span>' + v.cc + '</span><br>' : '') +
+          (temData && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
           (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (v.status === 'disponivel' ? '<span style="color:#aaa">Sem ocorrências</span>' : '')) +
         '</div>' +
       '</div>';
@@ -264,25 +240,28 @@
   }
 
   function modalHTML(v) {
-    const status = v ? v.status : 'disponivel';
-    const isMaut = status === 'manutencao';
+    const status  = v ? v.status : 'disponivel';
+    const isMaut  = status === 'manutencao';
     const isMobil = status === 'mobilizacao';
+    const isAgend = status === 'agendado';
+    const temExtra = isMaut || isMobil || isAgend;
     return '<div class="modal">' +
       '<h2>' + (v ? 'Editar veículo' : 'Novo veículo') + '</h2>' +
       '<div class="field"><label>Placa / Identificação</label><input id="m-placa" type="text" value="' + (v ? v.placa : '') + '" placeholder="Ex: QMY2A01" /></div>' +
       '<div class="field"><label>Status</label>' +
         '<select id="m-status" onchange="window._toggleStatus()">' +
-          '<option value="disponivel"' + (status === 'disponivel' ? ' selected' : '') + '>Disponível</option>' +
-          '<option value="manutencao"' + (isMaut ? ' selected' : '') + '>Em manutenção</option>' +
+          '<option value="disponivel"'  + (status === 'disponivel' ? ' selected' : '') + '>Disponível</option>' +
+          '<option value="manutencao"'  + (isMaut  ? ' selected' : '') + '>Em manutenção</option>' +
           '<option value="mobilizacao"' + (isMobil ? ' selected' : '') + '>Em mobilização</option>' +
+          '<option value="agendado"'    + (isAgend ? ' selected' : '') + '>Manutenção Agendada</option>' +
         '</select></div>' +
-      '<div id="m-extra-manut" style="' + (isMaut ? '' : 'display:none') + '">' +
+      '<div id="m-extra-local" style="' + (isMaut || isAgend ? '' : 'display:none') + '">' +
         '<div class="field"><label>Local</label><input id="m-local" type="text" value="' + (v && v.local ? v.local : '') + '" placeholder="Ex: Barão de Cocais" /></div>' +
       '</div>' +
-      '<div id="m-extra-mobil" style="' + (isMobil ? '' : 'display:none') + '">' +
+      '<div id="m-extra-cc" style="' + (isMobil ? '' : 'display:none') + '">' +
         '<div class="field"><label>Centro de Custo</label><input id="m-cc" type="text" value="' + (v && v.cc ? v.cc : '') + '" placeholder="Ex: 5970 VALE" /></div>' +
       '</div>' +
-      '<div id="m-extra-comum" style="' + (isMaut || isMobil ? '' : 'display:none') + '">' +
+      '<div id="m-extra-comum" style="' + (temExtra ? '' : 'display:none') + '">' +
         '<div class="field"><label>Data de entrada</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
         '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
       '</div>' +
@@ -295,9 +274,9 @@
 
   window._toggleStatus = function() {
     const s = document.getElementById('m-status').value;
-    document.getElementById('m-extra-manut').style.display = s === 'manutencao' ? '' : 'none';
-    document.getElementById('m-extra-mobil').style.display = s === 'mobilizacao' ? '' : 'none';
-    document.getElementById('m-extra-comum').style.display = (s === 'manutencao' || s === 'mobilizacao') ? '' : 'none';
+    document.getElementById('m-extra-local').style.display  = (s === 'manutencao' || s === 'agendado') ? '' : 'none';
+    document.getElementById('m-extra-cc').style.display     = s === 'mobilizacao' ? '' : 'none';
+    document.getElementById('m-extra-comum').style.display  = (s !== 'disponivel') ? '' : 'none';
   };
 
   window._closeModal = function() {
@@ -318,12 +297,12 @@
   };
 
   window._saveModal = async function() {
-    const placa = document.getElementById('m-placa').value.trim().toUpperCase();
+    const placa  = document.getElementById('m-placa').value.trim().toUpperCase();
     const status = document.getElementById('m-status').value;
-    const local = status === 'manutencao' ? document.getElementById('m-local').value.trim() : '';
-    const cc = status === 'mobilizacao' ? document.getElementById('m-cc').value.trim() : '';
-    const desde = (status === 'manutencao' || status === 'mobilizacao') ? document.getElementById('m-desde').value : '';
-    const obs = (status === 'manutencao' || status === 'mobilizacao') ? document.getElementById('m-obs').value.trim() : '';
+    const local  = (status === 'manutencao' || status === 'agendado')  ? document.getElementById('m-local').value.trim()  : '';
+    const cc     = status === 'mobilizacao' ? document.getElementById('m-cc').value.trim()    : '';
+    const desde  = status !== 'disponivel'  ? document.getElementById('m-desde').value        : '';
+    const obs    = status !== 'disponivel'  ? document.getElementById('m-obs').value.trim()   : '';
     if (!placa) { alert('Informe a placa do veículo.'); return; }
     try {
       if (editId) {
