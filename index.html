@@ -14,7 +14,6 @@
   }
   body { font-family: var(--font-sans); background: #f0f2f5; min-height: 100vh; }
 
-  /* HEADER */
   .header {
     background: var(--erg-blue);
     padding: 0;
@@ -30,51 +29,28 @@
     flex-wrap: wrap;
     gap: 10px;
   }
-  .header-logo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .header-logo img {
-    height: 52px;
-    border-radius: 6px;
-  }
-  .header-title {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-  }
-  .header-title span {
-    color: var(--erg-orange);
-  }
-  .header-clock {
-    color: rgba(255,255,255,0.75);
-    font-size: 12px;
-    text-align: right;
-  }
+  .header-logo { display: flex; align-items: center; gap: 14px; }
+  .header-logo img { height: 52px; border-radius: 6px; }
+  .header-title { color: #fff; font-size: 20px; font-weight: 500; letter-spacing: 0.3px; }
+  .header-title span { color: var(--erg-orange); }
+  .header-clock { color: rgba(255,255,255,0.75); font-size: 12px; text-align: right; }
 
-  /* BODY */
   .wrap { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
 
-  /* SUMMARY */
   .summary-row {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     margin-bottom: 1.25rem;
     align-items: center;
-    justify-content: space-between;
   }
-  .summary-badges { display: flex; gap: 10px; flex-wrap: wrap; }
   .badge { font-size: 13px; padding: 5px 14px; border-radius: 8px; font-weight: 500; }
   .badge-disp { background: #EAF3DE; color: #2d5a0e; }
   .badge-manut { background: #FCEBEB; color: #A32D2D; }
+  .badge-mobil { background: #FEF3CD; color: #7a5200; }
 
-  /* GRID */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 
-  /* CARD */
   .card {
     background: #fff;
     border-radius: 12px;
@@ -87,18 +63,22 @@
   .card:hover { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
   .card.manut { border-top-color: #E24B4A; }
   .card.manut:hover { border-top-color: #A32D2D; }
+  .card.mobil { border-top-color: #f0b429; }
+  .card.mobil:hover { border-top-color: #c88a00; }
+
   .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .card-placa { font-size: 15px; font-weight: 600; color: var(--erg-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot-disp { background: #639922; }
   .dot-manut { background: #E24B4A; }
+  .dot-mobil { background: #f0b429; }
   .tag { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
   .tag-disp { background: #EAF3DE; color: #3B6D11; }
   .tag-manut { background: #FCEBEB; color: #A32D2D; }
+  .tag-mobil { background: #FEF3CD; color: #7a5200; }
   .card-info { font-size: 12px; color: #666; line-height: 1.8; }
   .card-info span { color: #1a1a1a; font-weight: 500; }
 
-  /* ADD BUTTON */
   .add-btn { margin-top: 1.5rem; display: flex; justify-content: center; }
   button.add {
     font-size: 13px;
@@ -114,11 +94,9 @@
   }
   button.add:hover { background: rgba(224,112,32,0.08); }
 
-  /* STATUS BAR */
   .status-bar { font-size: 11px; color: #999; text-align: center; margin-top: 1rem; }
   .loading { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
 
-  /* MODAL */
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
   .modal {
     background: #fff;
@@ -186,11 +164,10 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-inner">
     <div class="header-logo">
-      <img src="https://thiagoalmeidacod-arch.github.io/Frota-ERG/logo.png" alt="ERG" onerror="this.style.display='none'" />
+      <img src="logo.png" alt="ERG" onerror="this.style.display='none'" />
       <div>
         <div class="header-title">Painel de <span>Frota</span></div>
         <div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:2px;">ERG Engenharia · Meio Ambiente · Geotecnologias</div>
@@ -200,11 +177,8 @@
   </div>
 </div>
 
-<!-- CONTENT -->
 <div class="wrap">
-  <div class="summary-row">
-    <div class="summary-badges" id="summary"></div>
-  </div>
+  <div class="summary-row" id="summary"></div>
   <div id="grid" class="grid"><div class="loading">Carregando veículos...</div></div>
   <div class="add-btn">
     <button class="add" onclick="openNew()">+ Adicionar veículo</button>
@@ -250,12 +224,21 @@
     return d + '/' + m + '/' + y;
   }
 
+  function getStatusInfo(status) {
+    if (status === 'manutencao') return { label: 'Manutenção', tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
+    if (status === 'mobilizacao') return { label: 'Em mobilização', tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
+    return { label: 'Disponível', tagClass: 'tag-disp', dotClass: 'dot-disp', cardClass: '' };
+  }
+
   function render() {
     const dispN = veiculos.filter(v => v.status === 'disponivel').length;
     const mautN = veiculos.filter(v => v.status === 'manutencao').length;
-    document.getElementById('summary').innerHTML =
-      '<span class="badge badge-disp">' + dispN + ' disponível' + (dispN !== 1 ? 'is' : '') + '</span>' +
-      '<span class="badge badge-manut">' + mautN + ' em manutenção</span>';
+    const mobilN = veiculos.filter(v => v.status === 'mobilizacao').length;
+
+    let badges = '<span class="badge badge-disp">' + dispN + ' disponível' + (dispN !== 1 ? 'is' : '') + '</span>';
+    badges += '<span class="badge badge-manut">' + mautN + ' em manutenção</span>';
+    badges += '<span class="badge badge-mobil">' + mobilN + ' em mobilização</span>';
+    document.getElementById('summary').innerHTML = badges;
 
     if (veiculos.length === 0) {
       document.getElementById('grid').innerHTML = '<div class="loading">Nenhum veículo cadastrado. Clique em "+ Adicionar veículo" para começar.</div>';
@@ -263,34 +246,43 @@
     }
 
     document.getElementById('grid').innerHTML = veiculos.map(v => {
-      const isMaut = v.status === 'manutencao';
-      const dias = isMaut ? diasDesde(v.desde) : '';
-      return '<div class="card' + (isMaut ? ' manut' : '') + '" onclick="window._openEdit(\'' + v.id + '\')">' +
+      const info = getStatusInfo(v.status);
+      const dias = (v.status === 'manutencao' || v.status === 'mobilizacao') ? diasDesde(v.desde) : '';
+      return '<div class="card ' + info.cardClass + '" onclick="window._openEdit(\'' + v.id + '\')">' +
         '<div class="card-header">' +
-          '<span class="card-placa"><span class="dot ' + (isMaut ? 'dot-manut' : 'dot-disp') + '"></span>' + v.placa + '</span>' +
-          '<span class="tag ' + (isMaut ? 'tag-manut' : 'tag-disp') + '">' + (isMaut ? 'Manutenção' : 'Disponível') + '</span>' +
+          '<span class="card-placa"><span class="dot ' + info.dotClass + '"></span>' + v.placa + '</span>' +
+          '<span class="tag ' + info.tagClass + '">' + info.label + '</span>' +
         '</div>' +
         '<div class="card-info">' +
-          (isMaut && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
-          (isMaut && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
-          (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (isMaut ? '' : '<span style="color:#aaa">Sem ocorrências</span>')) +
+          (v.status === 'manutencao' && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
+          (v.status === 'mobilizacao' && v.cc ? 'C. Custo: <span>' + v.cc + '</span><br>' : '') +
+          ((v.status === 'manutencao' || v.status === 'mobilizacao') && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
+          (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (v.status === 'disponivel' ? '<span style="color:#aaa">Sem ocorrências</span>' : '')) +
         '</div>' +
       '</div>';
     }).join('');
   }
 
   function modalHTML(v) {
-    const isMaut = v ? v.status === 'manutencao' : false;
+    const status = v ? v.status : 'disponivel';
+    const isMaut = status === 'manutencao';
+    const isMobil = status === 'mobilizacao';
     return '<div class="modal">' +
       '<h2>' + (v ? 'Editar veículo' : 'Novo veículo') + '</h2>' +
-      '<div class="field"><label>Placa</label><input id="m-placa" type="text" value="' + (v ? v.placa : '') + '" placeholder="Ex: QMY2A04" /></div>' +
+      '<div class="field"><label>Placa / Identificação</label><input id="m-placa" type="text" value="' + (v ? v.placa : '') + '" placeholder="Ex: QMY2A01" /></div>' +
       '<div class="field"><label>Status</label>' +
-        '<select id="m-status" onchange="window._toggleMaut()">' +
-          '<option value="disponivel"' + (!isMaut ? ' selected' : '') + '>Disponível</option>' +
+        '<select id="m-status" onchange="window._toggleStatus()">' +
+          '<option value="disponivel"' + (status === 'disponivel' ? ' selected' : '') + '>Disponível</option>' +
           '<option value="manutencao"' + (isMaut ? ' selected' : '') + '>Em manutenção</option>' +
+          '<option value="mobilizacao"' + (isMobil ? ' selected' : '') + '>Em mobilização</option>' +
         '</select></div>' +
-      '<div id="m-extra" style="' + (isMaut ? '' : 'display:none') + '">' +
+      '<div id="m-extra-manut" style="' + (isMaut ? '' : 'display:none') + '">' +
         '<div class="field"><label>Local</label><input id="m-local" type="text" value="' + (v && v.local ? v.local : '') + '" placeholder="Ex: Barão de Cocais" /></div>' +
+      '</div>' +
+      '<div id="m-extra-mobil" style="' + (isMobil ? '' : 'display:none') + '">' +
+        '<div class="field"><label>Centro de Custo</label><input id="m-cc" type="text" value="' + (v && v.cc ? v.cc : '') + '" placeholder="Ex: 5970 VALE" /></div>' +
+      '</div>' +
+      '<div id="m-extra-comum" style="' + (isMaut || isMobil ? '' : 'display:none') + '">' +
         '<div class="field"><label>Data de entrada</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
         '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
       '</div>' +
@@ -301,9 +293,11 @@
       '</div></div>';
   }
 
-  window._toggleMaut = function() {
+  window._toggleStatus = function() {
     const s = document.getElementById('m-status').value;
-    document.getElementById('m-extra').style.display = s === 'manutencao' ? '' : 'none';
+    document.getElementById('m-extra-manut').style.display = s === 'manutencao' ? '' : 'none';
+    document.getElementById('m-extra-mobil').style.display = s === 'mobilizacao' ? '' : 'none';
+    document.getElementById('m-extra-comum').style.display = (s === 'manutencao' || s === 'mobilizacao') ? '' : 'none';
   };
 
   window._closeModal = function() {
@@ -327,14 +321,15 @@
     const placa = document.getElementById('m-placa').value.trim().toUpperCase();
     const status = document.getElementById('m-status').value;
     const local = status === 'manutencao' ? document.getElementById('m-local').value.trim() : '';
-    const desde = status === 'manutencao' ? document.getElementById('m-desde').value : '';
-    const obs = status === 'manutencao' ? document.getElementById('m-obs').value.trim() : '';
+    const cc = status === 'mobilizacao' ? document.getElementById('m-cc').value.trim() : '';
+    const desde = (status === 'manutencao' || status === 'mobilizacao') ? document.getElementById('m-desde').value : '';
+    const obs = (status === 'manutencao' || status === 'mobilizacao') ? document.getElementById('m-obs').value.trim() : '';
     if (!placa) { alert('Informe a placa do veículo.'); return; }
     try {
       if (editId) {
-        await updateDoc(doc(db, 'veiculos', editId), { placa, status, local, desde, obs });
+        await updateDoc(doc(db, 'veiculos', editId), { placa, status, local, cc, desde, obs });
       } else {
-        await addDoc(col, { placa, status, local, desde, obs });
+        await addDoc(col, { placa, status, local, cc, desde, obs });
       }
       window._closeModal();
     } catch(e) {
