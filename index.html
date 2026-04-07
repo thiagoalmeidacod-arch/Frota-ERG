@@ -14,20 +14,10 @@
   }
   body { font-family: var(--font-sans); background: #f0f2f5; min-height: 100vh; }
 
-  .header {
-    background: var(--erg-blue);
-    padding: 0;
-    border-bottom: 4px solid var(--erg-orange);
-  }
+  .header { background: var(--erg-blue); padding: 0; border-bottom: 4px solid var(--erg-orange); }
   .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 12px 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+    max-width: 1200px; margin: 0 auto; padding: 12px 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
   }
   .header-logo { display: flex; align-items: center; gap: 14px; }
   .header-logo img { height: 52px; border-radius: 6px; }
@@ -37,51 +27,46 @@
 
   .wrap { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
 
-  .summary-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 1.25rem;
-    align-items: center;
-  }
+  .summary-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; align-items: center; }
   .badge { font-size: 13px; padding: 5px 14px; border-radius: 8px; font-weight: 500; }
   .badge-disp  { background: #EAF3DE; color: #2d5a0e; }
   .badge-manut { background: #FCEBEB; color: #A32D2D; }
   .badge-mobil { background: #FEF3CD; color: #7a5200; }
   .badge-agend { background: #DFF3E3; color: #1a6630; }
+  .badge-locac { background: #FCEBEB; color: #7a0000; }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 
   .card {
-    background: #fff;
-    border-radius: 12px;
-    border: 0.5px solid rgba(0,0,0,0.1);
-    border-top: 3px solid var(--erg-blue);
-    padding: 1rem 1.25rem;
-    cursor: pointer;
+    background: #fff; border-radius: 12px; border: 0.5px solid rgba(0,0,0,0.1);
+    border-top: 3px solid var(--erg-blue); padding: 1rem 1.25rem; cursor: pointer;
     transition: box-shadow 0.15s, border-color 0.15s;
   }
-  .card:hover        { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
-  .card.manut        { border-top-color: #E24B4A; }
-  .card.manut:hover  { border-top-color: #A32D2D; }
-  .card.mobil        { border-top-color: #f0b429; }
-  .card.mobil:hover  { border-top-color: #c88a00; }
-  .card.agend        { border-top-color: #3aad5c; }
-  .card.agend:hover  { border-top-color: #1a6630; }
+  .card:hover       { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
+  .card.manut       { border-top-color: #E24B4A; }
+  .card.manut:hover { border-top-color: #A32D2D; }
+  .card.mobil       { border-top-color: #f0b429; }
+  .card.mobil:hover { border-top-color: #c88a00; }
+  .card.agend       { border-top-color: #3aad5c; }
+  .card.agend:hover { border-top-color: #1a6630; }
+  .card.locac       { border-top-color: #b00000; }
+  .card.locac:hover { border-top-color: #7a0000; }
 
   .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .card-placa  { font-size: 15px; font-weight: 600; color: var(--erg-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-  .dot         { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .dot-disp    { background: #639922; }
-  .dot-manut   { background: #E24B4A; }
-  .dot-mobil   { background: #f0b429; }
-  .dot-agend   { background: #3aad5c; }
-  .tag         { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
-  .tag-disp    { background: #EAF3DE; color: #3B6D11; }
-  .tag-manut   { background: #FCEBEB; color: #A32D2D; }
-  .tag-mobil   { background: #FEF3CD; color: #7a5200; }
-  .tag-agend   { background: #DFF3E3; color: #1a6630; }
-  .card-info   { font-size: 12px; color: #666; line-height: 1.8; }
+  .dot       { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-disp  { background: #639922; }
+  .dot-manut { background: #E24B4A; }
+  .dot-mobil { background: #f0b429; }
+  .dot-agend { background: #3aad5c; }
+  .dot-locac { background: #b00000; }
+  .tag       { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
+  .tag-disp  { background: #EAF3DE; color: #3B6D11; }
+  .tag-manut { background: #FCEBEB; color: #A32D2D; }
+  .tag-mobil { background: #FEF3CD; color: #7a5200; }
+  .tag-agend { background: #DFF3E3; color: #1a6630; }
+  .tag-locac { background: #FCEBEB; color: #7a0000; }
+  .card-info { font-size: 12px; color: #666; line-height: 1.8; }
   .card-info span { color: #1a1a1a; font-weight: 500; }
 
   .add-btn { margin-top: 1.5rem; display: flex; justify-content: center; }
@@ -179,6 +164,12 @@
   let veiculos = [];
   let editId   = null;
 
+  function fmtData(data) {
+    if (!data) return '';
+    const [y, m, d] = data.split('-');
+    return d + '/' + m + '/' + y;
+  }
+
   function diasDesde(data) {
     if (!data) return '';
     const d    = new Date(data + 'T00:00:00');
@@ -189,17 +180,12 @@
     return diff + ' dias';
   }
 
-  function fmtData(data) {
-    if (!data) return '';
-    const [y, m, d] = data.split('-');
-    return d + '/' + m + '/' + y;
-  }
-
   function getStatusInfo(status) {
-    if (status === 'manutencao')   return { label: 'Manutenção',         tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
-    if (status === 'mobilizacao')  return { label: 'Em mobilização',     tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
-    if (status === 'agendado')     return { label: 'Manut. Agendada',    tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
-    return                                { label: 'Disponível',         tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
+    if (status === 'manutencao')  return { label: 'Manutenção',      tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
+    if (status === 'mobilizacao') return { label: 'Em mobilização',  tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
+    if (status === 'agendado')    return { label: 'Manut. Agendada', tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
+    if (status === 'locacao')     return { label: 'Locação',         tagClass: 'tag-locac', dotClass: 'dot-locac', cardClass: 'locac' };
+    return                               { label: 'Disponível',      tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
   }
 
   function render() {
@@ -207,12 +193,14 @@
     const mautN  = veiculos.filter(v => v.status === 'manutencao').length;
     const mobilN = veiculos.filter(v => v.status === 'mobilizacao').length;
     const agendN = veiculos.filter(v => v.status === 'agendado').length;
+    const locacN = veiculos.filter(v => v.status === 'locacao').length;
 
     document.getElementById('summary').innerHTML =
-      '<span class="badge badge-disp">'  + dispN  + (dispN  === 1 ? ' disponível'         : ' disponíveis')        + '</span>' +
-      '<span class="badge badge-manut">' + mautN  + (mautN  === 1 ? ' em manutenção'      : ' em manutenção')      + '</span>' +
-      '<span class="badge badge-mobil">' + mobilN + (mobilN === 1 ? ' em mobilização'     : ' em mobilização')     + '</span>' +
-      '<span class="badge badge-agend">' + agendN + (agendN === 1 ? ' manut. agendada'    : ' manut. agendadas')   + '</span>';
+      '<span class="badge badge-disp">'  + dispN  + (dispN  === 1 ? ' disponível'      : ' disponíveis')      + '</span>' +
+      '<span class="badge badge-manut">' + mautN  + (mautN  === 1 ? ' em manutenção'   : ' em manutenção')    + '</span>' +
+      '<span class="badge badge-mobil">' + mobilN + (mobilN === 1 ? ' em mobilização'  : ' em mobilização')   + '</span>' +
+      '<span class="badge badge-agend">' + agendN + (agendN === 1 ? ' manut. agendada' : ' manut. agendadas') + '</span>' +
+      '<span class="badge badge-locac">' + locacN + (locacN === 1 ? ' em locação'      : ' em locação')       + '</span>';
 
     if (veiculos.length === 0) {
       document.getElementById('grid').innerHTML = '<div class="loading">Nenhum veículo cadastrado. Clique em "+ Adicionar veículo" para começar.</div>';
@@ -220,19 +208,22 @@
     }
 
     document.getElementById('grid').innerHTML = veiculos.map(v => {
-      const info = getStatusInfo(v.status);
-      const temData = v.status === 'manutencao' || v.status === 'mobilizacao' || v.status === 'agendado';
-      const dias = temData ? diasDesde(v.desde) : '';
+      const info    = getStatusInfo(v.status);
+      const temData = v.status !== 'disponivel';
+      const dias    = temData ? diasDesde(v.desde) : '';
       return '<div class="card ' + info.cardClass + '" onclick="window._openEdit(\'' + v.id + '\')">' +
         '<div class="card-header">' +
           '<span class="card-placa"><span class="dot ' + info.dotClass + '"></span>' + v.placa + '</span>' +
           '<span class="tag ' + info.tagClass + '">' + info.label + '</span>' +
         '</div>' +
         '<div class="card-info">' +
-          (v.status === 'manutencao' && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
-          (v.status === 'agendado'   && v.local ? 'Local: <span>' + v.local + '</span><br>' : '') +
-          (v.status === 'mobilizacao' && v.cc   ? 'C. Custo: <span>' + v.cc + '</span><br>' : '') +
-          (temData && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
+          (v.status === 'manutencao'  && v.local   ? 'Local: <span>'        + v.local   + '</span><br>' : '') +
+          (v.status === 'agendado'    && v.local   ? 'Local: <span>'        + v.local   + '</span><br>' : '') +
+          (v.status === 'mobilizacao' && v.cc      ? 'C. Custo: <span>'     + v.cc      + '</span><br>' : '') +
+          (v.status === 'locacao'     && v.padrao  ? 'Padrão: <span>'       + v.padrao  + '</span><br>' : '') +
+          (v.status === 'locacao'     && v.valor   ? 'Valor prev.: <span>R$ '+ v.valor  + '</span><br>' : '') +
+          (v.status === 'locacao'     && v.desde   ? 'Data limite: <span>'  + fmtData(v.desde) + '</span><br>' : '') +
+          (v.status !== 'locacao' && temData && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
           (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (v.status === 'disponivel' ? '<span style="color:#aaa">Sem ocorrências</span>' : '')) +
         '</div>' +
       '</div>';
@@ -244,27 +235,50 @@
     const isMaut  = status === 'manutencao';
     const isMobil = status === 'mobilizacao';
     const isAgend = status === 'agendado';
-    const temExtra = isMaut || isMobil || isAgend;
+    const isLocac = status === 'locacao';
+    const temExtra = isMaut || isMobil || isAgend || isLocac;
+
     return '<div class="modal">' +
       '<h2>' + (v ? 'Editar veículo' : 'Novo veículo') + '</h2>' +
-      '<div class="field"><label>Placa / Identificação</label><input id="m-placa" type="text" value="' + (v ? v.placa : '') + '" placeholder="Ex: QMY2A01" /></div>' +
+
+      '<div class="field"><label>' + (isLocac ? 'Veículo' : 'Placa / Identificação') + '</label>' +
+        '<input id="m-placa" type="text" value="' + (v ? v.placa : '') + '" placeholder="' + (isLocac ? 'Ex: Hilux Prata' : 'Ex: QMY2A01') + '" /></div>' +
+
       '<div class="field"><label>Status</label>' +
         '<select id="m-status" onchange="window._toggleStatus()">' +
           '<option value="disponivel"'  + (status === 'disponivel' ? ' selected' : '') + '>Disponível</option>' +
           '<option value="manutencao"'  + (isMaut  ? ' selected' : '') + '>Em manutenção</option>' +
           '<option value="mobilizacao"' + (isMobil ? ' selected' : '') + '>Em mobilização</option>' +
           '<option value="agendado"'    + (isAgend ? ' selected' : '') + '>Manutenção Agendada</option>' +
+          '<option value="locacao"'     + (isLocac ? ' selected' : '') + '>Locação</option>' +
         '</select></div>' +
+
       '<div id="m-extra-local" style="' + (isMaut || isAgend ? '' : 'display:none') + '">' +
         '<div class="field"><label>Local</label><input id="m-local" type="text" value="' + (v && v.local ? v.local : '') + '" placeholder="Ex: Barão de Cocais" /></div>' +
       '</div>' +
+
       '<div id="m-extra-cc" style="' + (isMobil ? '' : 'display:none') + '">' +
         '<div class="field"><label>Centro de Custo</label><input id="m-cc" type="text" value="' + (v && v.cc ? v.cc : '') + '" placeholder="Ex: 5970 VALE" /></div>' +
       '</div>' +
-      '<div id="m-extra-comum" style="' + (temExtra ? '' : 'display:none') + '">' +
+
+      '<div id="m-extra-locac" style="' + (isLocac ? '' : 'display:none') + '">' +
+        '<div class="field"><label>Data Limite</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
+        '<div class="field"><label>Valor Previsto (R$)</label><input id="m-valor" type="text" inputmode="decimal" value="' + (v && v.valor ? v.valor : '') + '" placeholder="Ex: 3.500,00" /></div>' +
+        '<div class="field"><label>Padrão</label>' +
+          '<select id="m-padrao">' +
+            '<option value=""' + (!v || !v.padrao ? ' selected' : '') + '>Selecione...</option>' +
+            ['Vale','Samarco','Anglo','Arcelor','Usiminas','Sem Padronização'].map(p =>
+              '<option value="' + p + '"' + (v && v.padrao === p ? ' selected' : '') + '>' + p + '</option>'
+            ).join('') +
+          '</select></div>' +
+        '<div class="field"><label>Observação</label><input id="m-obs-loc" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Renovação contrato" /></div>' +
+      '</div>' +
+
+      '<div id="m-extra-comum" style="' + (isMaut || isMobil || isAgend ? '' : 'display:none') + '">' +
         '<div class="field"><label>Data de entrada</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
         '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
       '</div>' +
+
       '<div class="modal-btns">' +
         '<button class="btn-save" onclick="window._saveModal()">Salvar</button>' +
         (v ? '<button class="btn-del" onclick="window._deleteVeiculo()">Remover</button>' : '') +
@@ -275,8 +289,12 @@
   window._toggleStatus = function() {
     const s = document.getElementById('m-status').value;
     document.getElementById('m-extra-local').style.display  = (s === 'manutencao' || s === 'agendado') ? '' : 'none';
-    document.getElementById('m-extra-cc').style.display     = s === 'mobilizacao' ? '' : 'none';
-    document.getElementById('m-extra-comum').style.display  = (s !== 'disponivel') ? '' : 'none';
+    document.getElementById('m-extra-cc').style.display     = s === 'mobilizacao'  ? '' : 'none';
+    document.getElementById('m-extra-locac').style.display  = s === 'locacao'      ? '' : 'none';
+    document.getElementById('m-extra-comum').style.display  = (s === 'manutencao' || s === 'mobilizacao' || s === 'agendado') ? '' : 'none';
+    const label = document.querySelector('#m-placa').previousElementSibling;
+    label.textContent = s === 'locacao' ? 'Veículo' : 'Placa / Identificação';
+    document.querySelector('#m-placa').placeholder = s === 'locacao' ? 'Ex: Hilux Prata' : 'Ex: QMY2A01';
   };
 
   window._closeModal = function() {
@@ -299,16 +317,32 @@
   window._saveModal = async function() {
     const placa  = document.getElementById('m-placa').value.trim().toUpperCase();
     const status = document.getElementById('m-status').value;
-    const local  = (status === 'manutencao' || status === 'agendado')  ? document.getElementById('m-local').value.trim()  : '';
-    const cc     = status === 'mobilizacao' ? document.getElementById('m-cc').value.trim()    : '';
-    const desde  = status !== 'disponivel'  ? document.getElementById('m-desde').value        : '';
-    const obs    = status !== 'disponivel'  ? document.getElementById('m-obs').value.trim()   : '';
-    if (!placa) { alert('Informe a placa do veículo.'); return; }
+
+    let local = '', cc = '', desde = '', obs = '', valor = '', padrao = '';
+
+    if (status === 'manutencao' || status === 'agendado') {
+      local  = document.getElementById('m-local') ? document.getElementById('m-local').value.trim() : '';
+      desde  = document.getElementById('m-desde') ? document.getElementById('m-desde').value : '';
+      obs    = document.getElementById('m-obs')   ? document.getElementById('m-obs').value.trim() : '';
+    }
+    if (status === 'mobilizacao') {
+      cc     = document.getElementById('m-cc')    ? document.getElementById('m-cc').value.trim() : '';
+      desde  = document.getElementById('m-desde') ? document.getElementById('m-desde').value : '';
+      obs    = document.getElementById('m-obs')   ? document.getElementById('m-obs').value.trim() : '';
+    }
+    if (status === 'locacao') {
+      desde  = document.getElementById('m-desde')   ? document.getElementById('m-desde').value : '';
+      valor  = document.getElementById('m-valor')   ? document.getElementById('m-valor').value.trim() : '';
+      padrao = document.getElementById('m-padrao')  ? document.getElementById('m-padrao').value : '';
+      obs    = document.getElementById('m-obs-loc') ? document.getElementById('m-obs-loc').value.trim() : '';
+    }
+
+    if (!placa) { alert('Informe a identificação do veículo.'); return; }
     try {
       if (editId) {
-        await updateDoc(doc(db, 'veiculos', editId), { placa, status, local, cc, desde, obs });
+        await updateDoc(doc(db, 'veiculos', editId), { placa, status, local, cc, desde, obs, valor, padrao });
       } else {
-        await addDoc(col, { placa, status, local, cc, desde, obs });
+        await addDoc(col, { placa, status, local, cc, desde, obs, valor, padrao });
       }
       window._closeModal();
     } catch(e) {
