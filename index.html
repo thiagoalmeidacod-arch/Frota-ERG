@@ -21,38 +21,36 @@
   }
   .header-logo { display: flex; align-items: center; gap: 14px; }
   .header-logo img { height: 52px; border-radius: 6px; }
-  .header-title { color: #fff; font-size: 20px; font-weight: 500; letter-spacing: 0.3px; }
+  .header-title { color: #fff; font-size: 20px; font-weight: 500; }
   .header-title span { color: var(--erg-orange); }
   .header-clock { color: rgba(255,255,255,0.75); font-size: 12px; text-align: right; }
 
   .wrap { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
 
-  .summary-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; align-items: center; }
-  .badge { font-size: 13px; padding: 5px 14px; border-radius: 8px; font-weight: 500; }
+  .summary-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; align-items: center; }
+  .badge { font-size: 12px; padding: 4px 12px; border-radius: 8px; font-weight: 500; }
   .badge-disp  { background: #EAF3DE; color: #2d5a0e; }
   .badge-manut { background: #FCEBEB; color: #A32D2D; }
   .badge-mobil { background: #FEF3CD; color: #7a5200; }
   .badge-agend { background: #DFF3E3; color: #1a6630; }
   .badge-locac { background: #FCEBEB; color: #7a0000; }
+  .badge-subst { background: #FFF0E6; color: #7a3500; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
 
   .card {
     background: #fff; border-radius: 12px; border: 0.5px solid rgba(0,0,0,0.1);
     border-top: 3px solid var(--erg-blue); padding: 1rem 1.25rem; cursor: pointer;
     transition: box-shadow 0.15s, border-color 0.15s;
   }
-  .card:hover       { box-shadow: 0 2px 12px rgba(26,58,92,0.12); border-top-color: var(--erg-orange); }
+  .card:hover       { box-shadow: 0 2px 12px rgba(26,58,92,0.12); }
   .card.manut       { border-top-color: #E24B4A; }
-  .card.manut:hover { border-top-color: #A32D2D; }
   .card.mobil       { border-top-color: #f0b429; }
-  .card.mobil:hover { border-top-color: #c88a00; }
   .card.agend       { border-top-color: #3aad5c; }
-  .card.agend:hover { border-top-color: #1a6630; }
   .card.locac       { border-top-color: #b00000; }
-  .card.locac:hover { border-top-color: #7a0000; }
+  .card.subst       { border-top-color: #e07020; }
 
-  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px; }
   .card-placa  { font-size: 15px; font-weight: 600; color: var(--erg-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
   .dot       { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot-disp  { background: #639922; }
@@ -60,14 +58,21 @@
   .dot-mobil { background: #f0b429; }
   .dot-agend { background: #3aad5c; }
   .dot-locac { background: #b00000; }
+  .dot-subst { background: #e07020; }
   .tag       { font-size: 11px; padding: 3px 9px; border-radius: 8px; font-weight: 500; }
   .tag-disp  { background: #EAF3DE; color: #3B6D11; }
   .tag-manut { background: #FCEBEB; color: #A32D2D; }
   .tag-mobil { background: #FEF3CD; color: #7a5200; }
   .tag-agend { background: #DFF3E3; color: #1a6630; }
   .tag-locac { background: #FCEBEB; color: #7a0000; }
-  .card-info { font-size: 12px; color: #666; line-height: 1.8; }
+  .tag-subst { background: #FFF0E6; color: #7a3500; }
+
+  .card-info { font-size: 12px; color: #666; line-height: 1.8; margin-top: 4px; }
   .card-info span { color: #1a1a1a; font-weight: 500; }
+
+  .prazo-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 6px; margin-top: 6px; }
+  .prazo-ok     { background: #EAF3DE; color: #2d5a0e; }
+  .prazo-atraso { background: #FCEBEB; color: #A32D2D; }
 
   .add-btn { margin-top: 1.5rem; display: flex; justify-content: center; }
   button.add {
@@ -84,8 +89,9 @@
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
   .modal {
     background: #fff; border-radius: 12px; border-top: 4px solid var(--erg-orange);
-    padding: 1.5rem; width: 330px; max-width: 95vw;
+    padding: 1.5rem; width: 340px; max-width: 95vw;
     box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    max-height: 90vh; overflow-y: auto;
   }
   .modal h2 { font-size: 16px; font-weight: 600; margin-bottom: 1rem; color: var(--erg-blue); }
   .field { margin-bottom: 12px; }
@@ -108,7 +114,7 @@
     border-radius: 8px; font-size: 13px; cursor: pointer; color: #A32D2D;
     font-family: var(--font-sans);
   }
-  .btn-del:hover { background: #FCEBEB; border-color: #f09595; }
+  .btn-del:hover { background: #FCEBEB; }
   .btn-cancel {
     padding: 9px 14px; background: transparent; border: 1px solid #ddd;
     border-radius: 8px; font-size: 13px; cursor: pointer; color: #666;
@@ -180,27 +186,47 @@
     return diff + ' dias';
   }
 
+  // Verifica se passou do prazo (data_limite < hoje)
+  function verificaPrazo(dataLimite) {
+    if (!dataLimite) return null;
+    const limite = new Date(dataLimite + 'T00:00:00');
+    const hoje   = new Date(); hoje.setHours(0,0,0,0);
+    return limite < hoje ? 'atraso' : 'ok';
+  }
+
+  function tagPrazo(dataLimite) {
+    const status = verificaPrazo(dataLimite);
+    if (!status) return '';
+    if (status === 'atraso') return '<span class="prazo-tag prazo-atraso">⚠ Em atraso</span>';
+    return '<span class="prazo-tag prazo-ok">✓ No prazo</span>';
+  }
+
   function getStatusInfo(status) {
-    if (status === 'manutencao')  return { label: 'Manutenção',      tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
-    if (status === 'mobilizacao') return { label: 'Em mobilização',  tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
-    if (status === 'agendado')    return { label: 'Manut. Agendada', tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
-    if (status === 'locacao')     return { label: 'Locação',         tagClass: 'tag-locac', dotClass: 'dot-locac', cardClass: 'locac' };
-    return                               { label: 'Disponível',      tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
+    if (status === 'manutencao')  return { label: 'Manutenção',         tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
+    if (status === 'mobilizacao') return { label: 'Em mobilização',     tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
+    if (status === 'agendado')    return { label: 'Manut. Agendada',    tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
+    if (status === 'locacao')     return { label: 'Locação',            tagClass: 'tag-locac', dotClass: 'dot-locac', cardClass: 'locac' };
+    if (status === 'substituicao')return { label: 'Substituição',       tagClass: 'tag-subst', dotClass: 'dot-subst', cardClass: 'subst' };
+    return                               { label: 'Disponível',         tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
   }
 
   function render() {
-    const dispN  = veiculos.filter(v => v.status === 'disponivel').length;
-    const mautN  = veiculos.filter(v => v.status === 'manutencao').length;
-    const mobilN = veiculos.filter(v => v.status === 'mobilizacao').length;
-    const agendN = veiculos.filter(v => v.status === 'agendado').length;
-    const locacN = veiculos.filter(v => v.status === 'locacao').length;
+    const counts = {
+      disponivel:   veiculos.filter(v => v.status === 'disponivel').length,
+      manutencao:   veiculos.filter(v => v.status === 'manutencao').length,
+      mobilizacao:  veiculos.filter(v => v.status === 'mobilizacao').length,
+      agendado:     veiculos.filter(v => v.status === 'agendado').length,
+      locacao:      veiculos.filter(v => v.status === 'locacao').length,
+      substituicao: veiculos.filter(v => v.status === 'substituicao').length,
+    };
 
     document.getElementById('summary').innerHTML =
-      '<span class="badge badge-disp">'  + dispN  + (dispN  === 1 ? ' disponível'      : ' disponíveis')      + '</span>' +
-      '<span class="badge badge-manut">' + mautN  + (mautN  === 1 ? ' em manutenção'   : ' em manutenção')    + '</span>' +
-      '<span class="badge badge-mobil">' + mobilN + (mobilN === 1 ? ' em mobilização'  : ' em mobilização')   + '</span>' +
-      '<span class="badge badge-agend">' + agendN + (agendN === 1 ? ' manut. agendada' : ' manut. agendadas') + '</span>' +
-      '<span class="badge badge-locac">' + locacN + (locacN === 1 ? ' em locação'      : ' em locação')       + '</span>';
+      '<span class="badge badge-disp">'  + counts.disponivel   + (counts.disponivel   === 1 ? ' disponível'      : ' disponíveis')      + '</span>' +
+      '<span class="badge badge-manut">' + counts.manutencao   + (counts.manutencao   === 1 ? ' em manutenção'   : ' em manutenção')    + '</span>' +
+      '<span class="badge badge-mobil">' + counts.mobilizacao  + (counts.mobilizacao  === 1 ? ' em mobilização'  : ' em mobilização')   + '</span>' +
+      '<span class="badge badge-agend">' + counts.agendado     + (counts.agendado     === 1 ? ' manut. agendada' : ' manut. agendadas') + '</span>' +
+      '<span class="badge badge-locac">' + counts.locacao      + (counts.locacao      === 1 ? ' em locação'      : ' em locação')       + '</span>' +
+      '<span class="badge badge-subst">' + counts.substituicao + (counts.substituicao === 1 ? ' substituição'    : ' substituições')    + '</span>';
 
     if (veiculos.length === 0) {
       document.getElementById('grid').innerHTML = '<div class="loading">Nenhum veículo cadastrado. Clique em "+ Adicionar veículo" para começar.</div>';
@@ -208,61 +234,97 @@
     }
 
     document.getElementById('grid').innerHTML = veiculos.map(v => {
-      const info    = getStatusInfo(v.status);
-      const temData = v.status !== 'disponivel';
-      const dias    = temData ? diasDesde(v.desde) : '';
+      const info = getStatusInfo(v.status);
+
+      // Campo de prazo: usa "prazo" para agendado/manutencao/mobilizacao/substituicao, "desde" para locação
+      const dataLimite = v.status === 'locacao' ? v.desde : v.prazo;
+
+      let infoLines = '';
+
+      if (v.status === 'manutencao') {
+        if (v.local)  infoLines += 'Local: <span>' + v.local + '</span><br>';
+        if (v.desde)  infoLines += 'Início: <span>' + fmtData(v.desde) + '</span> <span style="color:#999">(' + diasDesde(v.desde) + ')</span><br>';
+        if (v.prazo)  infoLines += 'Prazo: <span>' + fmtData(v.prazo) + '</span><br>';
+      } else if (v.status === 'mobilizacao') {
+        if (v.cc)     infoLines += 'C. Custo: <span>' + v.cc + '</span><br>';
+        if (v.desde)  infoLines += 'Início: <span>' + fmtData(v.desde) + '</span> <span style="color:#999">(' + diasDesde(v.desde) + ')</span><br>';
+        if (v.prazo)  infoLines += 'Prazo: <span>' + fmtData(v.prazo) + '</span><br>';
+      } else if (v.status === 'agendado') {
+        if (v.local)  infoLines += 'Local: <span>' + v.local + '</span><br>';
+        if (v.desde)  infoLines += 'Início: <span>' + fmtData(v.desde) + '</span><br>';
+        if (v.prazo)  infoLines += 'Conclusão: <span>' + fmtData(v.prazo) + '</span><br>';
+      } else if (v.status === 'locacao') {
+        if (v.padrao) infoLines += 'Padrão: <span>' + v.padrao + '</span><br>';
+        if (v.valor)  infoLines += 'Valor prev.: <span>R$ ' + v.valor + '</span><br>';
+        if (v.desde)  infoLines += 'Data limite: <span>' + fmtData(v.desde) + '</span><br>';
+      } else if (v.status === 'substituicao') {
+        if (v.local)  infoLines += 'Local: <span>' + v.local + '</span><br>';
+        if (v.desde)  infoLines += 'Início: <span>' + fmtData(v.desde) + '</span> <span style="color:#999">(' + diasDesde(v.desde) + ')</span><br>';
+        if (v.prazo)  infoLines += 'Prazo: <span>' + fmtData(v.prazo) + '</span><br>';
+      } else {
+        infoLines += '<span style="color:#aaa">Sem ocorrências</span>';
+      }
+
+      if (v.obs) infoLines += 'Obs: <span>' + v.obs + '</span><br>';
+
+      // Tag de prazo para todos exceto disponível
+      const prazoHTML = v.status !== 'disponivel' ? tagPrazo(dataLimite) : '';
+
       return '<div class="card ' + info.cardClass + '" onclick="window._openEdit(\'' + v.id + '\')">' +
         '<div class="card-header">' +
           '<span class="card-placa"><span class="dot ' + info.dotClass + '"></span>' + v.placa + '</span>' +
           '<span class="tag ' + info.tagClass + '">' + info.label + '</span>' +
         '</div>' +
-        '<div class="card-info">' +
-          (v.status === 'manutencao'  && v.local   ? 'Local: <span>'        + v.local   + '</span><br>' : '') +
-          (v.status === 'agendado'    && v.local   ? 'Local: <span>'        + v.local   + '</span><br>' : '') +
-          (v.status === 'mobilizacao' && v.cc      ? 'C. Custo: <span>'     + v.cc      + '</span><br>' : '') +
-          (v.status === 'locacao'     && v.padrao  ? 'Padrão: <span>'       + v.padrao  + '</span><br>' : '') +
-          (v.status === 'locacao'     && v.valor   ? 'Valor prev.: <span>R$ '+ v.valor  + '</span><br>' : '') +
-          (v.status === 'locacao'     && v.desde   ? 'Data limite: <span>'  + fmtData(v.desde) + '</span><br>' : '') +
-          (v.status !== 'locacao' && temData && v.desde ? 'Desde: <span>' + fmtData(v.desde) + '</span>' + (dias ? ' <span style="color:#999">(' + dias + ')</span>' : '') + '<br>' : '') +
-          (v.obs ? 'Obs: <span>' + v.obs + '</span>' : (v.status === 'disponivel' ? '<span style="color:#aaa">Sem ocorrências</span>' : '')) +
-        '</div>' +
+        '<div class="card-info">' + infoLines + prazoHTML + '</div>' +
       '</div>';
     }).join('');
   }
 
   function modalHTML(v) {
-    const status  = v ? v.status : 'disponivel';
-    const isMaut  = status === 'manutencao';
-    const isMobil = status === 'mobilizacao';
-    const isAgend = status === 'agendado';
-    const isLocac = status === 'locacao';
-    const temExtra = isMaut || isMobil || isAgend || isLocac;
+    const status     = v ? v.status : 'disponivel';
+    const isMaut     = status === 'manutencao';
+    const isMobil    = status === 'mobilizacao';
+    const isAgend    = status === 'agendado';
+    const isLocac    = status === 'locacao';
+    const isSubst    = status === 'substituicao';
+    const temPrazo   = isMaut || isMobil || isAgend || isSubst;
+    const temLocal   = isMaut || isAgend || isSubst;
 
     return '<div class="modal">' +
       '<h2>' + (v ? 'Editar veículo' : 'Novo veículo') + '</h2>' +
 
-      '<div class="field"><label>' + (isLocac ? 'Veículo' : 'Placa / Identificação') + '</label>' +
+      '<div class="field"><label id="lbl-placa">' + (isLocac ? 'Veículo' : 'Placa / Identificação') + '</label>' +
         '<input id="m-placa" type="text" value="' + (v ? v.placa : '') + '" placeholder="' + (isLocac ? 'Ex: Hilux Prata' : 'Ex: QMY2A01') + '" /></div>' +
 
       '<div class="field"><label>Status</label>' +
         '<select id="m-status" onchange="window._toggleStatus()">' +
-          '<option value="disponivel"'  + (status === 'disponivel' ? ' selected' : '') + '>Disponível</option>' +
-          '<option value="manutencao"'  + (isMaut  ? ' selected' : '') + '>Em manutenção</option>' +
-          '<option value="mobilizacao"' + (isMobil ? ' selected' : '') + '>Em mobilização</option>' +
-          '<option value="agendado"'    + (isAgend ? ' selected' : '') + '>Manutenção Agendada</option>' +
-          '<option value="locacao"'     + (isLocac ? ' selected' : '') + '>Locação</option>' +
+          '<option value="disponivel"'   + (status === 'disponivel'   ? ' selected' : '') + '>Disponível</option>' +
+          '<option value="manutencao"'   + (isMaut   ? ' selected' : '') + '>Em manutenção</option>' +
+          '<option value="mobilizacao"'  + (isMobil  ? ' selected' : '') + '>Em mobilização</option>' +
+          '<option value="agendado"'     + (isAgend  ? ' selected' : '') + '>Manutenção Agendada</option>' +
+          '<option value="locacao"'      + (isLocac  ? ' selected' : '') + '>Locação</option>' +
+          '<option value="substituicao"' + (isSubst  ? ' selected' : '') + '>Substituição</option>' +
         '</select></div>' +
 
-      '<div id="m-extra-local" style="' + (isMaut || isAgend ? '' : 'display:none') + '">' +
+      // LOCAL (manutenção, agendado, substituição)
+      '<div id="m-bloco-local" style="' + (temLocal ? '' : 'display:none') + '">' +
         '<div class="field"><label>Local</label><input id="m-local" type="text" value="' + (v && v.local ? v.local : '') + '" placeholder="Ex: Barão de Cocais" /></div>' +
       '</div>' +
 
-      '<div id="m-extra-cc" style="' + (isMobil ? '' : 'display:none') + '">' +
+      // CENTRO DE CUSTO (mobilização)
+      '<div id="m-bloco-cc" style="' + (isMobil ? '' : 'display:none') + '">' +
         '<div class="field"><label>Centro de Custo</label><input id="m-cc" type="text" value="' + (v && v.cc ? v.cc : '') + '" placeholder="Ex: 5970 VALE" /></div>' +
       '</div>' +
 
-      '<div id="m-extra-locac" style="' + (isLocac ? '' : 'display:none') + '">' +
-        '<div class="field"><label>Data Limite</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
+      // DATA INÍCIO + PRAZO (manutenção, mobilização, agendado, substituição)
+      '<div id="m-bloco-prazo" style="' + (temPrazo ? '' : 'display:none') + '">' +
+        '<div class="field"><label>Data de início</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
+        '<div class="field"><label>' + (isAgend ? 'Prazo de conclusão' : 'Prazo de conclusão') + '</label><input id="m-prazo" type="date" value="' + (v && v.prazo ? v.prazo : '') + '" /></div>' +
+      '</div>' +
+
+      // LOCAÇÃO
+      '<div id="m-bloco-locac" style="' + (isLocac ? '' : 'display:none') + '">' +
+        '<div class="field"><label>Data Limite</label><input id="m-desde-loc" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
         '<div class="field"><label>Valor Previsto (R$)</label><input id="m-valor" type="text" inputmode="decimal" value="' + (v && v.valor ? v.valor : '') + '" placeholder="Ex: 3.500,00" /></div>' +
         '<div class="field"><label>Padrão</label>' +
           '<select id="m-padrao">' +
@@ -274,9 +336,9 @@
         '<div class="field"><label>Observação</label><input id="m-obs-loc" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Renovação contrato" /></div>' +
       '</div>' +
 
-      '<div id="m-extra-comum" style="' + (isMaut || isMobil || isAgend ? '' : 'display:none') + '">' +
-        '<div class="field"><label>Data de entrada</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
-        '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
+      // OBS (todos exceto locação, que já tem obs própria)
+      '<div id="m-bloco-obs" style="' + (temPrazo ? '' : 'display:none') + '">' +
+        '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && !isLocac && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
       '</div>' +
 
       '<div class="modal-btns">' +
@@ -287,14 +349,16 @@
   }
 
   window._toggleStatus = function() {
-    const s = document.getElementById('m-status').value;
-    document.getElementById('m-extra-local').style.display  = (s === 'manutencao' || s === 'agendado') ? '' : 'none';
-    document.getElementById('m-extra-cc').style.display     = s === 'mobilizacao'  ? '' : 'none';
-    document.getElementById('m-extra-locac').style.display  = s === 'locacao'      ? '' : 'none';
-    document.getElementById('m-extra-comum').style.display  = (s === 'manutencao' || s === 'mobilizacao' || s === 'agendado') ? '' : 'none';
-    const label = document.querySelector('#m-placa').previousElementSibling;
-    label.textContent = s === 'locacao' ? 'Veículo' : 'Placa / Identificação';
-    document.querySelector('#m-placa').placeholder = s === 'locacao' ? 'Ex: Hilux Prata' : 'Ex: QMY2A01';
+    const s       = document.getElementById('m-status').value;
+    const temLocal = s === 'manutencao' || s === 'agendado' || s === 'substituicao';
+    const temPrazo = s === 'manutencao' || s === 'mobilizacao' || s === 'agendado' || s === 'substituicao';
+    document.getElementById('m-bloco-local').style.display  = temLocal       ? '' : 'none';
+    document.getElementById('m-bloco-cc').style.display     = s === 'mobilizacao' ? '' : 'none';
+    document.getElementById('m-bloco-prazo').style.display  = temPrazo       ? '' : 'none';
+    document.getElementById('m-bloco-locac').style.display  = s === 'locacao' ? '' : 'none';
+    document.getElementById('m-bloco-obs').style.display    = temPrazo       ? '' : 'none';
+    document.getElementById('lbl-placa').textContent        = s === 'locacao' ? 'Veículo' : 'Placa / Identificação';
+    document.getElementById('m-placa').placeholder          = s === 'locacao' ? 'Ex: Hilux Prata' : 'Ex: QMY2A01';
   };
 
   window._closeModal = function() {
@@ -317,32 +381,34 @@
   window._saveModal = async function() {
     const placa  = document.getElementById('m-placa').value.trim().toUpperCase();
     const status = document.getElementById('m-status').value;
+    if (!placa) { alert('Informe a identificação do veículo.'); return; }
 
-    let local = '', cc = '', desde = '', obs = '', valor = '', padrao = '';
+    let local = '', cc = '', desde = '', prazo = '', obs = '', valor = '', padrao = '';
 
-    if (status === 'manutencao' || status === 'agendado') {
-      local  = document.getElementById('m-local') ? document.getElementById('m-local').value.trim() : '';
-      desde  = document.getElementById('m-desde') ? document.getElementById('m-desde').value : '';
-      obs    = document.getElementById('m-obs')   ? document.getElementById('m-obs').value.trim() : '';
+    if (status === 'manutencao' || status === 'agendado' || status === 'substituicao') {
+      local = document.getElementById('m-local') ? document.getElementById('m-local').value.trim() : '';
     }
     if (status === 'mobilizacao') {
-      cc     = document.getElementById('m-cc')    ? document.getElementById('m-cc').value.trim() : '';
-      desde  = document.getElementById('m-desde') ? document.getElementById('m-desde').value : '';
-      obs    = document.getElementById('m-obs')   ? document.getElementById('m-obs').value.trim() : '';
+      cc = document.getElementById('m-cc') ? document.getElementById('m-cc').value.trim() : '';
+    }
+    if (status !== 'disponivel' && status !== 'locacao') {
+      desde = document.getElementById('m-desde') ? document.getElementById('m-desde').value : '';
+      prazo = document.getElementById('m-prazo') ? document.getElementById('m-prazo').value : '';
+      obs   = document.getElementById('m-obs')   ? document.getElementById('m-obs').value.trim() : '';
     }
     if (status === 'locacao') {
-      desde  = document.getElementById('m-desde')   ? document.getElementById('m-desde').value : '';
-      valor  = document.getElementById('m-valor')   ? document.getElementById('m-valor').value.trim() : '';
-      padrao = document.getElementById('m-padrao')  ? document.getElementById('m-padrao').value : '';
-      obs    = document.getElementById('m-obs-loc') ? document.getElementById('m-obs-loc').value.trim() : '';
+      desde  = document.getElementById('m-desde-loc') ? document.getElementById('m-desde-loc').value : '';
+      valor  = document.getElementById('m-valor')     ? document.getElementById('m-valor').value.trim() : '';
+      padrao = document.getElementById('m-padrao')    ? document.getElementById('m-padrao').value : '';
+      obs    = document.getElementById('m-obs-loc')   ? document.getElementById('m-obs-loc').value.trim() : '';
     }
 
-    if (!placa) { alert('Informe a identificação do veículo.'); return; }
     try {
+      const data = { placa, status, local, cc, desde, prazo, obs, valor, padrao };
       if (editId) {
-        await updateDoc(doc(db, 'veiculos', editId), { placa, status, local, cc, desde, obs, valor, padrao });
+        await updateDoc(doc(db, 'veiculos', editId), data);
       } else {
-        await addDoc(col, { placa, status, local, cc, desde, obs, valor, padrao });
+        await addDoc(col, data);
       }
       window._closeModal();
     } catch(e) {
