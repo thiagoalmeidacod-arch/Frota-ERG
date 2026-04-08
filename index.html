@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Painel de Frota — ERG Engenharia</title>
+<title>Gestão de Frotas — ERG Engenharia</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -70,7 +70,12 @@
   .card-info { font-size: 12px; color: #666; line-height: 1.8; margin-top: 4px; }
   .card-info span { color: #1a1a1a; font-weight: 500; }
 
-  .prazo-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 6px; margin-top: 6px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; flex-wrap: wrap; gap: 4px; }
+  .vinculo-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
+  .vinculo-proprio { background: #E6F1FB; color: #185FA5; }
+  .vinculo-locado  { background: #FFF0E6; color: #7a3500; }
+
+  .prazo-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
   .prazo-ok     { background: #EAF3DE; color: #2d5a0e; }
   .prazo-atraso { background: #FCEBEB; color: #A32D2D; }
 
@@ -102,6 +107,7 @@
     outline: none; transition: border-color 0.15s;
   }
   .field input:focus, .field select:focus { border-color: var(--erg-blue); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .modal-btns { display: flex; gap: 8px; margin-top: 1.25rem; }
   .btn-save {
     flex: 1; background: var(--erg-blue); border: none; border-radius: 8px;
@@ -186,7 +192,6 @@
     return diff + ' dias';
   }
 
-  // Verifica se passou do prazo (data_limite < hoje)
   function verificaPrazo(dataLimite) {
     if (!dataLimite) return null;
     const limite = new Date(dataLimite + 'T00:00:00');
@@ -194,24 +199,32 @@
     return limite < hoje ? 'atraso' : 'ok';
   }
 
-  function tagPrazo(dataLimite) {
-    const status = verificaPrazo(dataLimite);
-    if (!status) return '';
-    if (status === 'atraso') return '<span class="prazo-tag prazo-atraso">⚠ Em atraso</span>';
-    return '<span class="prazo-tag prazo-ok">✓ No prazo</span>';
+  function tagPrazoHTML(dataLimite) {
+    const st = verificaPrazo(dataLimite);
+    if (!st) return '';
+    return st === 'atraso'
+      ? '<span class="prazo-tag prazo-atraso">⚠ Em atraso</span>'
+      : '<span class="prazo-tag prazo-ok">✓ No prazo</span>';
+  }
+
+  function tagVinculoHTML(vinculo) {
+    if (!vinculo) return '';
+    return vinculo === 'Próprio'
+      ? '<span class="vinculo-tag vinculo-proprio">Próprio</span>'
+      : '<span class="vinculo-tag vinculo-locado">Locado</span>';
   }
 
   function getStatusInfo(status) {
-    if (status === 'manutencao')  return { label: 'Manutenção',         tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
-    if (status === 'mobilizacao') return { label: 'Em mobilização',     tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
-    if (status === 'agendado')    return { label: 'Manut. Agendada',    tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
-    if (status === 'locacao')     return { label: 'Locação',            tagClass: 'tag-locac', dotClass: 'dot-locac', cardClass: 'locac' };
-    if (status === 'substituicao')return { label: 'Substituição',       tagClass: 'tag-subst', dotClass: 'dot-subst', cardClass: 'subst' };
-    return                               { label: 'Disponível',         tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
+    if (status === 'manutencao')   return { label: 'Manutenção',       tagClass: 'tag-manut', dotClass: 'dot-manut', cardClass: 'manut' };
+    if (status === 'mobilizacao')  return { label: 'Em mobilização',   tagClass: 'tag-mobil', dotClass: 'dot-mobil', cardClass: 'mobil' };
+    if (status === 'agendado')     return { label: 'Manut. agendada',  tagClass: 'tag-agend', dotClass: 'dot-agend', cardClass: 'agend' };
+    if (status === 'locacao')      return { label: 'Locação',          tagClass: 'tag-locac', dotClass: 'dot-locac', cardClass: 'locac' };
+    if (status === 'substituicao') return { label: 'Substituição',     tagClass: 'tag-subst', dotClass: 'dot-subst', cardClass: 'subst' };
+    return                                { label: 'Disponível',       tagClass: 'tag-disp',  dotClass: 'dot-disp',  cardClass: ''      };
   }
 
   function render() {
-    const counts = {
+    const c = {
       disponivel:   veiculos.filter(v => v.status === 'disponivel').length,
       manutencao:   veiculos.filter(v => v.status === 'manutencao').length,
       mobilizacao:  veiculos.filter(v => v.status === 'mobilizacao').length,
@@ -221,12 +234,12 @@
     };
 
     document.getElementById('summary').innerHTML =
-      '<span class="badge badge-disp">'  + counts.disponivel   + (counts.disponivel   === 1 ? ' disponível'      : ' disponíveis')      + '</span>' +
-      '<span class="badge badge-manut">' + counts.manutencao   + (counts.manutencao   === 1 ? ' em manutenção'   : ' em manutenção')    + '</span>' +
-      '<span class="badge badge-mobil">' + counts.mobilizacao  + (counts.mobilizacao  === 1 ? ' em mobilização'  : ' em mobilização')   + '</span>' +
-      '<span class="badge badge-agend">' + counts.agendado     + (counts.agendado     === 1 ? ' manut. agendada' : ' manut. agendadas') + '</span>' +
-      '<span class="badge badge-locac">' + counts.locacao      + (counts.locacao      === 1 ? ' em locação'      : ' em locação')       + '</span>' +
-      '<span class="badge badge-subst">' + counts.substituicao + (counts.substituicao === 1 ? ' substituição'    : ' substituições')    + '</span>';
+      '<span class="badge badge-disp">'  + c.disponivel   + (c.disponivel   === 1 ? ' disponível'      : ' disponíveis')      + '</span>' +
+      '<span class="badge badge-manut">' + c.manutencao   + (c.manutencao   === 1 ? ' em manutenção'   : ' em manutenção')    + '</span>' +
+      '<span class="badge badge-mobil">' + c.mobilizacao  + (c.mobilizacao  === 1 ? ' em mobilização'  : ' em mobilização')   + '</span>' +
+      '<span class="badge badge-agend">' + c.agendado     + (c.agendado     === 1 ? ' manut. agendada' : ' manut. agendadas') + '</span>' +
+      '<span class="badge badge-locac">' + c.locacao      + (c.locacao      === 1 ? ' em locação'      : ' em locação')       + '</span>' +
+      '<span class="badge badge-subst">' + c.substituicao + (c.substituicao === 1 ? ' substituição'    : ' substituições')    + '</span>';
 
     if (veiculos.length === 0) {
       document.getElementById('grid').innerHTML = '<div class="loading">Nenhum veículo cadastrado. Clique em "+ Adicionar veículo" para começar.</div>';
@@ -235,18 +248,16 @@
 
     document.getElementById('grid').innerHTML = veiculos.map(v => {
       const info = getStatusInfo(v.status);
-
-      // Campo de prazo: usa "prazo" para agendado/manutencao/mobilizacao/substituicao, "desde" para locação
       const dataLimite = v.status === 'locacao' ? v.desde : v.prazo;
-
       let infoLines = '';
+
+      if (v.cc)     infoLines += 'C. Custo: <span>' + v.cc + '</span><br>';
 
       if (v.status === 'manutencao') {
         if (v.local)  infoLines += 'Local: <span>' + v.local + '</span><br>';
         if (v.desde)  infoLines += 'Início: <span>' + fmtData(v.desde) + '</span> <span style="color:#999">(' + diasDesde(v.desde) + ')</span><br>';
         if (v.prazo)  infoLines += 'Prazo: <span>' + fmtData(v.prazo) + '</span><br>';
       } else if (v.status === 'mobilizacao') {
-        if (v.cc)     infoLines += 'C. Custo: <span>' + v.cc + '</span><br>';
         if (v.desde)  infoLines += 'Início: <span>' + fmtData(v.desde) + '</span> <span style="color:#999">(' + diasDesde(v.desde) + ')</span><br>';
         if (v.prazo)  infoLines += 'Prazo: <span>' + fmtData(v.prazo) + '</span><br>';
       } else if (v.status === 'agendado') {
@@ -265,30 +276,51 @@
         infoLines += '<span style="color:#aaa">Sem ocorrências</span>';
       }
 
-      if (v.obs) infoLines += 'Obs: <span>' + v.obs + '</span><br>';
+      if (v.obs) infoLines += 'Obs: <span>' + v.obs + '</span>';
 
-      // Tag de prazo para todos exceto disponível
-      const prazoHTML = v.status !== 'disponivel' ? tagPrazo(dataLimite) : '';
+      const footerLeft  = tagVinculoHTML(v.vinculo);
+      const footerRight = v.status !== 'disponivel' ? tagPrazoHTML(dataLimite) : '';
+      const footer = (footerLeft || footerRight)
+        ? '<div class="card-footer">' + footerLeft + footerRight + '</div>'
+        : '';
 
       return '<div class="card ' + info.cardClass + '" onclick="window._openEdit(\'' + v.id + '\')">' +
         '<div class="card-header">' +
           '<span class="card-placa"><span class="dot ' + info.dotClass + '"></span>' + v.placa + '</span>' +
           '<span class="tag ' + info.tagClass + '">' + info.label + '</span>' +
         '</div>' +
-        '<div class="card-info">' + infoLines + prazoHTML + '</div>' +
+        '<div class="card-info">' + infoLines + '</div>' +
+        footer +
       '</div>';
     }).join('');
   }
 
+  // Campos comuns (CC + vínculo) usados em todos os status exceto disponível
+  function camposComuns(v, isLocac) {
+    const vinculo = v ? (v.vinculo || '') : '';
+    return '' +
+      '<div class="two-col">' +
+        '<div class="field"><label>Centro de Custo</label>' +
+          '<input id="m-cc" type="text" value="' + (v && v.cc ? v.cc : '') + '" placeholder="Ex: 5970" /></div>' +
+        '<div class="field"><label>Vínculo</label>' +
+          '<select id="m-vinculo">' +
+            '<option value=""'        + (!vinculo               ? ' selected' : '') + '>Selecione...</option>' +
+            '<option value="Próprio"' + (vinculo === 'Próprio'  ? ' selected' : '') + '>Próprio</option>' +
+            '<option value="Locado"'  + (vinculo === 'Locado'   ? ' selected' : '') + '>Locado</option>' +
+          '</select></div>' +
+      '</div>';
+  }
+
   function modalHTML(v) {
-    const status     = v ? v.status : 'disponivel';
-    const isMaut     = status === 'manutencao';
-    const isMobil    = status === 'mobilizacao';
-    const isAgend    = status === 'agendado';
-    const isLocac    = status === 'locacao';
-    const isSubst    = status === 'substituicao';
-    const temPrazo   = isMaut || isMobil || isAgend || isSubst;
-    const temLocal   = isMaut || isAgend || isSubst;
+    const status  = v ? v.status : 'disponivel';
+    const isMaut  = status === 'manutencao';
+    const isMobil = status === 'mobilizacao';
+    const isAgend = status === 'agendado';
+    const isLocac = status === 'locacao';
+    const isSubst = status === 'substituicao';
+    const temExtra = status !== 'disponivel';
+    const temLocal = isMaut || isAgend || isSubst;
+    const temPrazo = isMaut || isMobil || isAgend || isSubst;
 
     return '<div class="modal">' +
       '<h2>' + (v ? 'Editar veículo' : 'Novo veículo') + '</h2>' +
@@ -306,20 +338,20 @@
           '<option value="substituicao"' + (isSubst  ? ' selected' : '') + '>Substituição</option>' +
         '</select></div>' +
 
-      // LOCAL (manutenção, agendado, substituição)
+      // Campos comuns: CC + Vínculo (todos exceto disponível)
+      '<div id="m-bloco-comuns" style="' + (temExtra ? '' : 'display:none') + '">' +
+        camposComuns(v, isLocac) +
+      '</div>' +
+
+      // LOCAL
       '<div id="m-bloco-local" style="' + (temLocal ? '' : 'display:none') + '">' +
         '<div class="field"><label>Local</label><input id="m-local" type="text" value="' + (v && v.local ? v.local : '') + '" placeholder="Ex: Barão de Cocais" /></div>' +
       '</div>' +
 
-      // CENTRO DE CUSTO (mobilização)
-      '<div id="m-bloco-cc" style="' + (isMobil ? '' : 'display:none') + '">' +
-        '<div class="field"><label>Centro de Custo</label><input id="m-cc" type="text" value="' + (v && v.cc ? v.cc : '') + '" placeholder="Ex: 5970 VALE" /></div>' +
-      '</div>' +
-
-      // DATA INÍCIO + PRAZO (manutenção, mobilização, agendado, substituição)
+      // DATA INÍCIO + PRAZO
       '<div id="m-bloco-prazo" style="' + (temPrazo ? '' : 'display:none') + '">' +
         '<div class="field"><label>Data de início</label><input id="m-desde" type="date" value="' + (v && v.desde ? v.desde : '') + '" /></div>' +
-        '<div class="field"><label>' + (isAgend ? 'Prazo de conclusão' : 'Prazo de conclusão') + '</label><input id="m-prazo" type="date" value="' + (v && v.prazo ? v.prazo : '') + '" /></div>' +
+        '<div class="field"><label>Prazo de conclusão</label><input id="m-prazo" type="date" value="' + (v && v.prazo ? v.prazo : '') + '" /></div>' +
       '</div>' +
 
       // LOCAÇÃO
@@ -333,12 +365,11 @@
               '<option value="' + p + '"' + (v && v.padrao === p ? ' selected' : '') + '>' + p + '</option>'
             ).join('') +
           '</select></div>' +
-        '<div class="field"><label>Observação</label><input id="m-obs-loc" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Renovação contrato" /></div>' +
       '</div>' +
 
-      // OBS (todos exceto locação, que já tem obs própria)
-      '<div id="m-bloco-obs" style="' + (temPrazo ? '' : 'display:none') + '">' +
-        '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && !isLocac && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
+      // OBS
+      '<div id="m-bloco-obs" style="' + (temExtra ? '' : 'display:none') + '">' +
+        '<div class="field"><label>Observação</label><input id="m-obs" type="text" value="' + (v && v.obs ? v.obs : '') + '" placeholder="Ex: Troca de freio" /></div>' +
       '</div>' +
 
       '<div class="modal-btns">' +
@@ -349,14 +380,15 @@
   }
 
   window._toggleStatus = function() {
-    const s       = document.getElementById('m-status').value;
+    const s        = document.getElementById('m-status').value;
+    const temExtra = s !== 'disponivel';
     const temLocal = s === 'manutencao' || s === 'agendado' || s === 'substituicao';
     const temPrazo = s === 'manutencao' || s === 'mobilizacao' || s === 'agendado' || s === 'substituicao';
-    document.getElementById('m-bloco-local').style.display  = temLocal       ? '' : 'none';
-    document.getElementById('m-bloco-cc').style.display     = s === 'mobilizacao' ? '' : 'none';
-    document.getElementById('m-bloco-prazo').style.display  = temPrazo       ? '' : 'none';
+    document.getElementById('m-bloco-comuns').style.display = temExtra ? '' : 'none';
+    document.getElementById('m-bloco-local').style.display  = temLocal ? '' : 'none';
+    document.getElementById('m-bloco-prazo').style.display  = temPrazo ? '' : 'none';
     document.getElementById('m-bloco-locac').style.display  = s === 'locacao' ? '' : 'none';
-    document.getElementById('m-bloco-obs').style.display    = temPrazo       ? '' : 'none';
+    document.getElementById('m-bloco-obs').style.display    = temExtra ? '' : 'none';
     document.getElementById('lbl-placa').textContent        = s === 'locacao' ? 'Veículo' : 'Placa / Identificação';
     document.getElementById('m-placa').placeholder          = s === 'locacao' ? 'Ex: Hilux Prata' : 'Ex: QMY2A01';
   };
@@ -379,32 +411,31 @@
   };
 
   window._saveModal = async function() {
-    const placa  = document.getElementById('m-placa').value.trim().toUpperCase();
-    const status = document.getElementById('m-status').value;
+    const placa   = document.getElementById('m-placa').value.trim().toUpperCase();
+    const status  = document.getElementById('m-status').value;
     if (!placa) { alert('Informe a identificação do veículo.'); return; }
 
-    let local = '', cc = '', desde = '', prazo = '', obs = '', valor = '', padrao = '';
+    const cc      = status !== 'disponivel' && document.getElementById('m-cc')      ? document.getElementById('m-cc').value.trim()      : '';
+    const vinculo = status !== 'disponivel' && document.getElementById('m-vinculo') ? document.getElementById('m-vinculo').value         : '';
+    const obs     = status !== 'disponivel' && document.getElementById('m-obs')     ? document.getElementById('m-obs').value.trim()      : '';
+
+    let local = '', desde = '', prazo = '', valor = '', padrao = '';
 
     if (status === 'manutencao' || status === 'agendado' || status === 'substituicao') {
       local = document.getElementById('m-local') ? document.getElementById('m-local').value.trim() : '';
     }
-    if (status === 'mobilizacao') {
-      cc = document.getElementById('m-cc') ? document.getElementById('m-cc').value.trim() : '';
-    }
     if (status !== 'disponivel' && status !== 'locacao') {
       desde = document.getElementById('m-desde') ? document.getElementById('m-desde').value : '';
       prazo = document.getElementById('m-prazo') ? document.getElementById('m-prazo').value : '';
-      obs   = document.getElementById('m-obs')   ? document.getElementById('m-obs').value.trim() : '';
     }
     if (status === 'locacao') {
       desde  = document.getElementById('m-desde-loc') ? document.getElementById('m-desde-loc').value : '';
       valor  = document.getElementById('m-valor')     ? document.getElementById('m-valor').value.trim() : '';
       padrao = document.getElementById('m-padrao')    ? document.getElementById('m-padrao').value : '';
-      obs    = document.getElementById('m-obs-loc')   ? document.getElementById('m-obs-loc').value.trim() : '';
     }
 
     try {
-      const data = { placa, status, local, cc, desde, prazo, obs, valor, padrao };
+      const data = { placa, status, cc, vinculo, local, desde, prazo, obs, valor, padrao };
       if (editId) {
         await updateDoc(doc(db, 'veiculos', editId), data);
       } else {
