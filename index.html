@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gestão de Frotas — ERG Engenharia</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--b:#1a3a5c;--o:#e07020;--bl:#2a5080;--f:system-ui,-apple-system,sans-serif}
+body{font-family:var(--f);background:#f0f2f5;min-height:100vh}
+.hdr{background:var(--b);border-bottom:4px solid var(--o)}
+.hdr-in{max-width:1200px;margin:0 auto;padding:12px 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.hdr-logo{display:flex;align-items:center;gap:14px}
+.hdr-logo img{height:52px;border-radius:6px}
+.hdr-title{color:#fff;font-size:20px;font-weight:500}
+.hdr-title span{color:var(--o)}
+.hdr-clock{color:rgba(255,255,255,0.75);font-size:12px;text-align:right}
+.nav{background:var(--b);border-bottom:1px solid rgba(255,255,255,0.1)}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;gap:4px}
+.nb{padding:10px 18px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.65);background:transparent;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:var(--f);transition:all .15s}
+.nb:hover{color:#fff}
+.nb.on{color:#fff;border-bottom-color:var(--o)}
+.wrap{padding:1.5rem;max-width:1200px;margin:0 auto}
+.aba{display:none}
+.aba.on{display:block}
+.si{width:100%;max-width:420px;padding:9px 14px;border:1px solid #ddd;border-radius:8px;font-size:13px;font-family:var(--f);outline:none;transition:border-color .15s;margin-bottom:1rem}
+.si:focus{border-color:var(--b)}
+.sr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.bk{font-size:12px;padding:4px 12px;border-radius:8px;font-weight:500;cursor:pointer;transition:all .15s;border:2px solid transparent;user-select:none}
+.bk:hover{opacity:.8}
+.bk.on{border:2px solid currentColor;font-weight:700}
+.bd{background:#EAF3DE;color:#2d5a0e}.bm{background:#FCEBEB;color:#A32D2D}
+.bo{background:#FEF3CD;color:#7a5200}.ba{background:#DFF3E3;color:#1a6630}
+.bl2{background:#FCEBEB;color:#7a0000}.bs{background:#FFF0E6;color:#7a3500}
+.bc{background:#E6F1FB;color:#185FA5}
+.fl{font-size:11px;color:#999;align-self:center;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.card{background:#fff;border-radius:12px;border:.5px solid rgba(0,0,0,.1);border-top:3px solid var(--b);padding:1rem 1.25rem;cursor:pointer;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 12px rgba(26,58,92,.12)}
+.card.cm{border-top-color:#E24B4A}.card.co{border-top-color:#f0b429}
+.card.ca{border-top-color:#3aad5c}.card.cl{border-top-color:#b00000}
+.card.cs{border-top-color:#e07020}.card.cc{border-top-color:#378ADD;opacity:.85}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:4px}
+.cp{font-size:15px;font-weight:600;color:var(--b);letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dd{background:#639922}.dm{background:#E24B4A}.do{background:#f0b429}
+.da{background:#3aad5c}.dl{background:#b00000}.ds{background:#e07020}.dc{background:#378ADD}
+.tg{font-size:11px;padding:3px 9px;border-radius:8px;font-weight:500}
+.td{background:#EAF3DE;color:#3B6D11}.tm{background:#FCEBEB;color:#A32D2D}
+.to{background:#FEF3CD;color:#7a5200}.ta{background:#DFF3E3;color:#1a6630}
+.tl{background:#FCEBEB;color:#7a0000}.ts{background:#FFF0E6;color:#7a3500}.tc{background:#E6F1FB;color:#185FA5}
+.ci{font-size:12px;color:#666;line-height:1.8;margin-top:4px}
+.ci span{color:#1a1a1a;font-weight:500}
+.cf{display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:4px}
+.vt{font-size:10px;font-weight:600;padding:2px 8px;border-radius:6px}
+.vp{background:#E6F1FB;color:#185FA5}.vl{background:#FFF0E6;color:#7a3500}
+.pt{font-size:10px;font-weight:600;padding:2px 8px;border-radius:6px}
+.pok{background:#EAF3DE;color:#2d5a0e}.pat{background:#FCEBEB;color:#A32D2D}
+.pcok{background:#EAF3DE;color:#2d5a0e}.pcat{background:#FCEBEB;color:#A32D2D}
+.bh{font-size:10px;color:#999;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;font-family:var(--f)}
+.bh:hover{color:var(--b)}
+.add-btn{margin-top:1.5rem;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+button.add{font-size:13px;padding:9px 24px;border-radius:8px;border:1.5px solid var(--o);background:transparent;color:var(--o);cursor:pointer;font-family:var(--f);font-weight:500}
+button.add:hover{background:rgba(224,112,32,.08)}
+button.exp{font-size:13px;padding:9px 24px;border-radius:8px;border:1.5px solid var(--b);background:transparent;color:var(--b);cursor:pointer;font-family:var(--f);font-weight:500}
+button.exp:hover{background:rgba(26,58,92,.06)}
+.sb{font-size:11px;color:#999;text-align:center;margin-top:1rem}
+.ld{text-align:center;padding:2rem;color:#888;font-size:14px}
+.mb{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.md{background:#fff;border-radius:12px;border-top:4px solid var(--o);padding:1.5rem;width:380px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
+.md h2{font-size:16px;font-weight:600;margin-bottom:1rem;color:var(--b)}
+.fd{margin-bottom:12px}
+.fd label{display:block;font-size:12px;color:#555;margin-bottom:4px;font-weight:500}
+.fd input,.fd select{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:#fff;color:#1a1a1a;font-family:var(--f);outline:none;transition:border-color .15s}
+.fd input:focus,.fd select:focus{border-color:var(--b)}
+.fd .hint{font-size:11px;color:#999;margin-top:3px}
+.tc2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mbt{display:flex;gap:8px;margin-top:1.25rem}
+.bsv{flex:1;background:var(--b);border:none;border-radius:8px;padding:9px;font-size:13px;cursor:pointer;font-weight:600;color:#fff;font-family:var(--f)}
+.bsv:hover{background:var(--bl)}
+.bdl{padding:9px 14px;background:transparent;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;color:#A32D2D;font-family:var(--f)}
+.bdl:hover{background:#FCEBEB}
+.bcl{padding:9px 14px;background:transparent;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;color:#666;font-family:var(--f)}
+.bcl:hover{background:#f5f5f5}
+.hbg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:200}
+.hmd{background:#fff;border-radius:12px;border-top:4px solid var(--b);padding:1.5rem;width:420px;max-width:95vw;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.hmd h2{font-size:15px;font-weight:600;color:var(--b);margin-bottom:1rem}
+.hi{padding:10px 0;border-bottom:.5px solid #eee;font-size:12px}
+.hi:last-child{border-bottom:none}
+.hd{font-size:11px;color:#999;margin-bottom:2px}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.dc2{background:#fff;border-radius:12px;border:.5px solid rgba(0,0,0,.1);padding:1rem 1.25rem}
+.dc2 h3{font-size:12px;color:#999;font-weight:500;margin-bottom:6px}
+.dc2 .n{font-size:28px;font-weight:600;color:var(--b)}
+.ds2{background:#fff;border-radius:12px;border:.5px solid rgba(0,0,0,.1);padding:1.25rem;margin-bottom:1rem}
+.ds2 h3{font-size:14px;font-weight:600;color:var(--b);margin-bottom:1rem}
+.pw{display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.lg{display:flex;flex-direction:column;gap:6px}
+.li{display:flex;align-items:center;gap:8px;font-size:12px;color:#555}
+.ld2{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.tl2{display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto}
+.ti{display:flex;gap:12px;align-items:flex-start;font-size:12px}
+.td2{color:#999;min-width:80px;font-size:11px}
+.tp{font-weight:600;color:var(--b)}
+.fw{margin-bottom:1rem;display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+
+/* ── POSICIONOGRAMA ── */
+#mapa-pos{width:100%;height:480px;border-radius:12px;border:.5px solid rgba(0,0,0,.1);z-index:1}
+.pos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:1.25rem}
+.pos-card{background:#fff;border-radius:12px;border:.5px solid rgba(0,0,0,.1);border-left:4px solid #ccc;padding:.9rem 1rem;cursor:pointer;transition:box-shadow .15s}
+.pos-card:hover{box-shadow:0 2px 12px rgba(26,58,92,.12)}
+.pos-card.disp{border-left-color:#3aad5c}
+.pos-card.camp{border-left-color:#e07020}
+.pos-card.desl{border-left-color:#378ADD}
+.pos-nome{font-size:14px;font-weight:600;color:var(--b);margin-bottom:2px}
+.pos-placa{font-size:11px;color:#999;margin-bottom:6px}
+.pos-info{font-size:12px;color:#555;line-height:1.7}
+.pos-info span{color:#1a1a1a;font-weight:500}
+.pos-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:8px;margin-bottom:6px}
+.pb-disp{background:#DFF3E3;color:#1a6630}
+.pb-camp{background:#FFF0E6;color:#7a3500}
+.pb-desl{background:#E6F1FB;color:#185FA5}
+.pos-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-logo">
+      <img src="logo.png" alt="ERG" onerror="this.style.display='none'"/>
+      <div>
+        <div class="hdr-title">Gestão de <span>Frotas</span></div>
+        <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:2px">ERG Engenharia · Meio Ambiente · Geotecnologias</div>
+      </div>
+    </div>
+    <div class="hdr-clock" id="clock"></div>
+  </div>
+</div>
+<div class="nav">
+  <div class="nav-in">
+    <button class="nb on" onclick="mudarAba('frota',this)">🚗 Frota</button>
+    <button class="nb" onclick="mudarAba('dash',this)">📊 Dashboard</button>
+    <button class="nb" onclick="mudarAba('rel',this)">📄 Relatório</button>
+    <button class="nb" onclick="mudarAba('pos',this)">📍 Posicionograma</button>
+  </div>
+</div>
+<div class="wrap">
+  <div id="aba-frota" class="aba on">
+    <input class="si" type="text" placeholder="🔍 Buscar por placa..." oninput="window.buscar(this.value)"/>
+    <div class="sr" id="sr"></div>
+    <div id="grid" class="grid"><div class="ld">Carregando...</div></div>
+    <div class="add-btn"><button class="add" onclick="window.novoVeiculo()">+ Adicionar veículo</button></div>
+    <div class="sb" id="sb">Conectando...</div>
+  </div>
+  <div id="aba-dash" class="aba">
+    <div class="fw">
+      <div>
+        <div style="font-size:11px;color:#999;margin-bottom:4px;font-weight:500">Centro de custo</div>
+        <input class="si" style="margin-bottom:0;min-width:200px" type="text" placeholder="Ex: 6180" oninput="window.filtCC(this.value)"/>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#999;margin-bottom:4px;font-weight:500">De</div>
+        <input class="si" id="fde" style="margin-bottom:0;width:155px" type="date" onchange="window.filtData()"/>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#999;margin-bottom:4px;font-weight:500">Até</div>
+        <input class="si" id="fate" style="margin-bottom:0;width:155px" type="date" onchange="window.filtData()"/>
+      </div>
+      <div>
+        <div style="font-size:11px;color:transparent">.</div>
+        <button onclick="window.limparDash()" style="padding:9px 14px;border-radius:8px;border:1px solid #ddd;background:transparent;color:#999;cursor:pointer;font-size:12px;font-family:var(--f)">✕ Limpar</button>
+      </div>
+      <span id="dlabel" style="font-size:12px;color:var(--o);font-weight:500;align-self:center"></span>
+    </div>
+    <div class="dg" id="dcards"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <div class="ds2"><h3>Distribuição por status</h3><div class="pw"><canvas id="cv1" width="160" height="160"></canvas><div class="lg" id="lg1"></div></div></div>
+      <div class="ds2"><h3>Custo por centro de custo</h3><div class="pw"><canvas id="cv2" width="160" height="160"></canvas><div class="lg" id="lg2"></div></div></div>
+      <div class="ds2"><h3>Últimas movimentações</h3><div class="tl2" id="tl"></div></div>
+    </div>
+  </div>
+  <div id="aba-rel" class="aba">
+    <div style="background:#fff;border-radius:12px;border:.5px solid rgba(0,0,0,.1);padding:1.25rem;margin-bottom:1rem">
+      <h3 style="font-size:14px;font-weight:600;color:var(--b);margin-bottom:1rem">Filtros</h3>
+      <div class="tc2" style="max-width:500px">
+        <div class="fd"><label>Status</label>
+          <select id="rst">
+            <option value="">Todos</option>
+            <option value="disponivel">Disponível</option>
+            <option value="manutencao">Em manutenção</option>
+            <option value="mobilizacao">Em mobilização</option>
+            <option value="agendado">Manut. agendada</option>
+            <option value="locacao">Locação</option>
+            <option value="substituicao">Substituição</option>
+            <option value="concluido">Concluído</option>
+          </select>
+        </div>
+        <div class="fd"><label>Tipo</label>
+          <select id="rvn">
+            <option value="">Todos</option>
+            <option value="Próprio">Próprio</option>
+            <option value="Locado">Locado</option>
+          </select>
+        </div>
+      </div>
+      <div class="add-btn" style="justify-content:flex-start;margin-top:8px">
+        <button class="exp" onclick="window.expXls()">⬇ Excel</button>
+        <button class="exp" onclick="window.expPdf()">⬇ PDF</button>
+      </div>
+    </div>
+    <div id="rtab"></div>
+  </div>
+  <div id="aba-pos" class="aba">
+    <div class="pos-toolbar">
+      <input class="si" type="text" style="margin-bottom:0;max-width:300px" placeholder="🔍 Buscar colaborador ou placa..." oninput="window.buscarPos(this.value)"/>
+      <button class="bk pb-disp" onclick="window.filtPos('disponivel',this)">● Disponível</button>
+      <button class="bk pb-camp" onclick="window.filtPos('campo',this)">● Em campo</button>
+      <button class="bk pb-desl" onclick="window.filtPos('deslocamento',this)">● Em deslocamento</button>
+      <span class="fl" onclick="window.filtPos(null,this)">✕ Limpar filtro</span>
+    </div>
+    <div id="mapa-pos"></div>
+    <div class="pos-grid" id="pos-grid"></div>
+    <div class="add-btn">
+      <button class="add" onclick="window.novoPosicionamento()">+ Adicionar colaborador</button>
+    </div>
+    <div class="sb" id="pos-sb"></div>
+  </div>
+</div>
+<div id="modal" style="display:none"></div>
+<div id="hmodal" style="display:none"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, query, orderBy, getDocs }
+  from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import emailjs from "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/+esm";
+
+emailjs.init('55ZqdyFKq56zbhXgu');
+
+const app = initializeApp({
+  apiKey:"AIzaSyBWurnJOeq29n0NncjnLlf_krpq19vPIkM",
+  authDomain:"frota-erg.firebaseapp.com",
+  projectId:"frota-erg",
+  storageBucket:"frota-erg.firebasestorage.app",
+  messagingSenderId:"267421435604",
+  appId:"1:267421435604:web:ca257c03eb3ae420a41d41"
+});
+const db  = getFirestore(app);
+const col = collection(db,"veiculos");
+
+let veiculos=[], editId=null, filtro=null, busca="", fCC="", fDe="", fAte="";
+
+// ── UTILS ──────────────────────────────────────────────────────────
+const fmt = d => { if(!d)return ''; const [y,m,dd]=d.split('-'); return dd+'/'+m+'/'+y; };
+const hoje = () => { const d=new Date(); d.setHours(0,0,0,0); return d; };
+const hojeStr = () => new Date().toISOString().split('T')[0];
+const diasDe  = d => { if(!d)return ''; const diff=Math.round((hoje()-new Date(d+'T00:00:00'))/86400000); return diff===0?'hoje':diff===1?'1 dia':diff+' dias'; };
+const prazoOk = dl => { if(!dl)return null; return new Date(dl+'T00:00:00')<hoje()?'at':'ok'; };
+const prazoConc = (dl,dc) => { if(!dl||!dc)return null; return new Date(dc+'T00:00:00')<=new Date(dl+'T00:00:00')?'ok':'at'; };
+const parseV  = v => parseFloat((v||'0').replace(/\./g,'').replace(',','.'))||0;
+
+// ── STATUS ─────────────────────────────────────────────────────────
+const SI = {
+  disponivel:  {lb:'Disponível',      tg:'td',  dt:'dd', cd:''},
+  manutencao:  {lb:'Manutenção',      tg:'tm',  dt:'dm', cd:'cm'},
+  mobilizacao: {lb:'Em mobilização',  tg:'to',  dt:'do', cd:'co'},
+  agendado:    {lb:'Manut. agendada', tg:'ta',  dt:'da', cd:'ca'},
+  locacao:     {lb:'Locação',         tg:'tl',  dt:'dl', cd:'cl'},
+  substituicao:{lb:'Substituição',    tg:'ts',  dt:'ds', cd:'cs'},
+  concluido:   {lb:'Concluído',       tg:'tc',  dt:'dc', cd:'cc'},
+};
+const si = s => SI[s]||SI.disponivel;
+const lb = s => si(s).lb;
+
+// ── EMAIL ──────────────────────────────────────────────────────────
+async function mail(emails,sub,msg){
+  if(!emails)return;
+  const lista=emails.split(/[,;]/).map(x=>x.trim()).filter(Boolean);
+  if(!lista.length)return;
+  try{
+    await emailjs.send('service_mc9majh','template_2xdqcfs',{
+      to_email: lista.join(', '),
+      subject:  sub,
+      message:  msg
+    });
+  }catch(err){console.warn('Erro ao enviar e-mail:',err);}
+}
+function mkMsg(v,titulo){
+  return ['Olá,','',titulo,'',
+    'Veículo: '+v.placa,'Tipo: '+(v.vinculo||'—'),'C. Custo: '+(v.cc||'—'),
+    v.km?'KM: '+v.km:null, v.tipoManut?'Tipo manut.: '+v.tipoManut:null,
+    v.local?'Local: '+v.local:null, v.desde?'Início: '+fmt(v.desde):null,
+    v.prazo?'Prazo: '+fmt(v.prazo):null, v.valor?'Custo: R$ '+v.valor:null,
+    v.padrao?'Padrão: '+v.padrao:null, v.obs?'Obs: '+v.obs:null,
+    '','Atenciosamente,','ERG Engenharia — Gestão de Frotas'
+  ].filter(x=>x!==null).join('\n');
+}
+
+// ── HISTÓRICO ──────────────────────────────────────────────────────
+async function logHist(id,desc){
+  try{await addDoc(collection(db,'veiculos',id,'historico'),{descricao:desc,data:new Date().toISOString()});}
+  catch(e){}
+}
+
+window.verHist = async (id,placa) => {
+  const snap = await getDocs(query(collection(db,'veiculos',id,'historico'),orderBy('data','desc')));
+  const itens = snap.docs.map(d=>d.data());
+  const rows = itens.length===0
+    ? '<div style="text-align:center;padding:1rem;color:#aaa;font-size:13px">Sem registros.</div>'
+    : itens.map(h=>{
+        const dt=new Date(h.data);
+        return '<div class="hi"><div class="hd">'+dt.toLocaleDateString('pt-BR')+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'</div><div>'+h.descricao+'</div></div>';
+      }).join('');
+  document.getElementById('hmodal').innerHTML =
+    '<div class="hbg" onclick="if(event.target===this)document.getElementById(\'hmodal\').style.display=\'none\'">'+
+    '<div class="hmd"><h2>Histórico — '+placa+'</h2>'+rows+
+    '<div style="margin-top:1rem;text-align:right"><button class="bcl" onclick="document.getElementById(\'hmodal\').style.display=\'none\'">Fechar</button></div>'+
+    '</div></div>';
+  document.getElementById('hmodal').style.display='';
+};
+
+// ── TAGS ───────────────────────────────────────────────────────────
+function tagPrazo(v){
+  if(v.status==='disponivel')return '';
+  const dl = v.status==='locacao'?v.desde:v.prazo;
+  if(v.status==='concluido'){
+    const s=prazoConc(dl,v.dataConclusao); if(!s)return '';
+    return s==='ok'?'<span class="pt pcok">✓ Concluído no prazo</span>':'<span class="pt pcat">✓ Concluído em atraso</span>';
+  }
+  const s=prazoOk(dl); if(!s)return '';
+  return s==='at'?'<span class="pt pat">⚠ Em atraso</span>':'<span class="pt pok">✓ No prazo</span>';
+}
+function tagVinc(v){
+  if(!v.vinculo)return '';
+  return v.vinculo==='Próprio'?'<span class="vt vp">Próprio</span>':'<span class="vt vl">Locado</span>';
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────
+function render(){
+  const cnt={disponivel:0,manutencao:0,mobilizacao:0,agendado:0,locacao:0,substituicao:0,concluido:0};
+  veiculos.forEach(v=>{if(cnt[v.status]!==undefined)cnt[v.status]++;});
+
+  const mkB=(st,cls,n,lbl)=>
+    '<span class="bk '+cls+(filtro===st?' on':'')+'" onclick="window.setFiltro(\''+st+'\')">'+n+lbl+'</span>';
+  document.getElementById('sr').innerHTML =
+    mkB('disponivel',  'bd', cnt.disponivel,   cnt.disponivel===1?' disponível':' disponíveis') +
+    mkB('manutencao',  'bm', cnt.manutencao,   ' em manutenção') +
+    mkB('mobilizacao', 'bo', cnt.mobilizacao,  ' em mobilização') +
+    mkB('agendado',    'ba', cnt.agendado,      cnt.agendado===1?' manut. agendada':' manut. agendadas') +
+    mkB('locacao',     'bl2',cnt.locacao,       ' em locação') +
+    mkB('substituicao','bs', cnt.substituicao,  cnt.substituicao===1?' substituição':' substituições') +
+    mkB('concluido',   'bc', cnt.concluido,     cnt.concluido===1?' concluído':' concluídos') +
+    (filtro?'<span class="fl" onclick="window.setFiltro(null)">✕ limpar</span>':'');
+
+  let lista = filtro ? veiculos.filter(v=>v.status===filtro) : veiculos;
+  if(busca) lista = lista.filter(v=>v.placa&&v.placa.toLowerCase().includes(busca.toLowerCase()));
+
+  if(lista.length===0){
+    document.getElementById('grid').innerHTML='<div class="ld">'+(filtro||busca?'Nenhum veículo encontrado.':'Nenhum veículo cadastrado.')+'</div>';
+  }else{
+    document.getElementById('grid').innerHTML = lista.map(v=>{
+      const s=si(v.status);
+      let inf='';
+      if(v.cc)  inf+='C. Custo: <span>'+v.cc+'</span><br>';
+      if(v.km)  inf+='KM: <span>'+v.km+'</span><br>';
+      if(v.status==='manutencao'){
+        if(v.tipoManut) inf+='Tipo: <span>'+v.tipoManut+'</span><br>';
+        if(v.local)     inf+='Local: <span>'+v.local+'</span><br>';
+        if(v.desde)     inf+='Início: <span>'+fmt(v.desde)+'</span> <span style="color:#999">('+diasDe(v.desde)+')</span><br>';
+        if(v.prazo)     inf+='Prazo: <span>'+fmt(v.prazo)+'</span><br>';
+      }else if(v.status==='substituicao'){
+        if(v.local)  inf+='Local: <span>'+v.local+'</span><br>';
+        if(v.desde)  inf+='Início: <span>'+fmt(v.desde)+'</span> <span style="color:#999">('+diasDe(v.desde)+')</span><br>';
+        if(v.prazo)  inf+='Prazo: <span>'+fmt(v.prazo)+'</span><br>';
+      }else if(v.status==='mobilizacao'){
+        if(v.desde) inf+='Início: <span>'+fmt(v.desde)+'</span> <span style="color:#999">('+diasDe(v.desde)+')</span><br>';
+        if(v.prazo) inf+='Prazo: <span>'+fmt(v.prazo)+'</span><br>';
+      }else if(v.status==='agendado'){
+        if(v.local)  inf+='Local: <span>'+v.local+'</span><br>';
+        if(v.desde)  inf+='Início: <span>'+fmt(v.desde)+'</span><br>';
+        if(v.prazo)  inf+='Conclusão: <span>'+fmt(v.prazo)+'</span><br>';
+      }else if(v.status==='locacao'){
+        if(v.padrao) inf+='Padrão: <span>'+v.padrao+'</span><br>';
+        if(v.valor)  inf+='Custo total: <span>R$ '+v.valor+'</span><br>';
+        if(v.desde)  inf+='Limite: <span>'+fmt(v.desde)+'</span><br>';
+      }else if(v.status==='concluido'){
+        if(v.tipoManut) inf+='Tipo: <span>'+v.tipoManut+'</span><br>';
+        if(v.local)     inf+='Local: <span>'+v.local+'</span><br>';
+        if(v.desde)     inf+='Início: <span>'+fmt(v.desde)+'</span><br>';
+        if(v.prazo)     inf+='Prazo: <span>'+fmt(v.prazo)+'</span><br>';
+        if(v.valor)     inf+='Custo total: <span>R$ '+v.valor+'</span><br>';
+        if(v.padrao)    inf+='Padrão: <span>'+v.padrao+'</span><br>';
+      }else{
+        inf+='<span style="color:#aaa">Sem ocorrências</span>';
+      }
+      if(v.obs)              inf+='Obs: <span>'+v.obs+'</span><br>';
+      if(v.emailResponsavel) inf+='Resp.: <span>'+v.emailResponsavel+'</span>';
+      return '<div class="card '+s.cd+'" onclick="window.editarVeiculo(\''+v.id+'\')">'+
+        '<div class="ch"><span class="cp"><span class="dot '+s.dt+'"></span>'+v.placa+'</span><span class="tg '+s.tg+'">'+s.lb+'</span></div>'+
+        '<div class="ci">'+inf+'</div>'+
+        '<div class="cf">'+tagVinc(v)+tagPrazo(v)+'<button class="bh" onclick="event.stopPropagation();window.verHist(\''+v.id+'\',\''+v.placa+'\')">Histórico</button></div>'+
+      '</div>';
+    }).join('');
+  }
+  renderDash();
+  renderRel();
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────────────
+function renderDash(){
+  const vF = veiculos.filter(v=>{
+    const ccOk  = !fCC  || String(v.cc||'').toLowerCase().includes(fCC.toLowerCase());
+    const ref   = v.desde||v.dataConclusao||'';
+    const deOk  = !fDe  || ref>=fDe;
+    const ateOk = !fAte || ref<=fAte;
+    return ccOk&&deOk&&ateOk;
+  });
+  const total   = veiculos.length;
+  const ativos  = veiculos.filter(v=>v.status!=='disponivel'&&v.status!=='concluido').length;
+  const custo   = vF.filter(v=>v.valor).reduce((s,v)=>s+parseV(v.valor),0);
+
+  const partes=[];
+  if(fCC)  partes.push('CC: '+fCC);
+  if(fDe)  partes.push('De: '+fmt(fDe));
+  if(fAte) partes.push('Até: '+fmt(fAte));
+  document.getElementById('dlabel').textContent = partes.length?'📊 '+partes.join(' · '):'';
+
+  document.getElementById('dcards').innerHTML =
+    dc('Total de veículos',total)+
+    dc('Em operação',ativos)+
+    dc('Disponíveis',veiculos.filter(v=>v.status==='disponivel').length)+
+    dc('Custo acumulado','R$ '+custo.toLocaleString('pt-BR',{minimumFractionDigits:2}));
+
+  // Pizza status
+  const cnt={disponivel:0,manutencao:0,mobilizacao:0,agendado:0,locacao:0,substituicao:0,concluido:0};
+  veiculos.forEach(v=>{if(cnt[v.status]!==undefined)cnt[v.status]++;});
+  const cores={disponivel:'#639922',manutencao:'#E24B4A',mobilizacao:'#f0b429',agendado:'#3aad5c',locacao:'#b00000',substituicao:'#e07020',concluido:'#378ADD'};
+  const it1 = Object.entries(cnt).filter(([,n])=>n>0);
+  pizza('cv1', it1.map(([s,n])=>({v:n,c:cores[s]||'#ccc'})), it1.reduce((a,[,n])=>a+n,0));
+  document.getElementById('lg1').innerHTML = it1.map(([s,n])=>
+    '<div class="li"><div class="ld2" style="background:'+cores[s]+'"></div>'+lb(s)+' ('+n+')</div>'
+  ).join('');
+
+  // Pizza custo CC
+  const pal=['#1a3a5c','#e07020','#3aad5c','#E24B4A','#f0b429','#378ADD','#b00000','#639922','#9b59b6','#16a085'];
+  const ccMap={};
+  vF.filter(v=>v.valor&&v.cc).forEach(v=>{const n=parseV(v.valor);if(n>0)ccMap[v.cc]=(ccMap[v.cc]||0)+n;});
+  const it2=Object.entries(ccMap).sort((a,b)=>b[1]-a[1]);
+  if(it2.length===0){
+    const cv=document.getElementById('cv2'),cx=cv.getContext('2d');
+    cx.clearRect(0,0,160,160);cx.fillStyle='#eee';cx.beginPath();cx.arc(80,80,70,0,2*Math.PI);cx.fill();
+    document.getElementById('lg2').innerHTML='<div style="font-size:11px;color:#aaa">Sem custos registrados</div>';
+  }else{
+    pizza('cv2',it2.map(([,v],i)=>({v,c:pal[i%pal.length]})),it2.reduce((a,[,v])=>a+v,0));
+    document.getElementById('lg2').innerHTML=it2.map(([cc,v],i)=>
+      '<div class="li"><div class="ld2" style="background:'+pal[i%pal.length]+'"></div>'+
+      cc+' — R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</div>'
+    ).join('');
+  }
+
+  // Timeline
+  document.getElementById('tl').innerHTML='<div style="color:#aaa;font-size:12px">Carregando...</div>';
+  Promise.all(veiculos.slice(0,20).map(async v=>{
+    const snap=await getDocs(query(collection(db,'veiculos',v.id,'historico'),orderBy('data','desc')));
+    return snap.docs.slice(0,3).map(d=>({...d.data(),placa:v.placa}));
+  })).then(res=>{
+    const todos=res.flat().sort((a,b)=>b.data.localeCompare(a.data)).slice(0,15);
+    document.getElementById('tl').innerHTML=todos.length===0
+      ?'<div style="color:#aaa;font-size:12px">Sem movimentações.</div>'
+      :todos.map(h=>{
+          const dt=new Date(h.data);
+          return '<div class="ti"><div class="td2">'+dt.toLocaleDateString('pt-BR')+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'</div>'+
+            '<div><span class="tp">'+h.placa+'</span> — '+h.descricao+'</div></div>';
+        }).join('');
+  });
+}
+
+function dc(t,v){return '<div class="dc2"><h3>'+t+'</h3><div class="n">'+v+'</div></div>';}
+function pizza(id,itens,total){
+  const cv=document.getElementById(id),ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,160,160);
+  let ang=-Math.PI/2;
+  itens.forEach(it=>{
+    const f=(it.v/total)*2*Math.PI;
+    ctx.beginPath();ctx.moveTo(80,80);ctx.arc(80,80,70,ang,ang+f);ctx.closePath();ctx.fillStyle=it.c;ctx.fill();
+    ang+=f;
+  });
+}
+
+// ── RELATÓRIO ──────────────────────────────────────────────────────
+function filtRel(){
+  const st=document.getElementById('rst').value;
+  const vn=document.getElementById('rvn').value;
+  return veiculos.filter(v=>(!st||v.status===st)&&(!vn||v.vinculo===vn));
+}
+function renderRel(){
+  const lista=filtRel();
+  if(lista.length===0){document.getElementById('rtab').innerHTML='<div class="ld">Nenhum veículo.</div>';return;}
+  const rows=lista.map(v=>`<tr style="border-bottom:.5px solid #eee">
+    <td style="padding:8px">${v.placa}</td><td style="padding:8px">${lb(v.status)}</td>
+    <td style="padding:8px">${v.tipoManut||'—'}</td><td style="padding:8px">${v.vinculo||'—'}</td>
+    <td style="padding:8px">${v.cc||'—'}</td><td style="padding:8px">${v.km||'—'}</td>
+    <td style="padding:8px">${fmt(v.desde)||'—'}</td><td style="padding:8px">${fmt(v.prazo)||'—'}</td>
+    <td style="padding:8px">${v.valor?'R$ '+v.valor:'—'}</td><td style="padding:8px">${v.obs||'—'}</td>
+  </tr>`).join('');
+  document.getElementById('rtab').innerHTML=
+    '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:12px">'+
+    '<thead><tr style="background:var(--b);color:#fff">'+
+    '<th style="padding:10px 8px;text-align:left">Placa</th><th style="padding:10px 8px;text-align:left">Status</th>'+
+    '<th style="padding:10px 8px;text-align:left">Tipo Manut.</th><th style="padding:10px 8px;text-align:left">Vínculo</th>'+
+    '<th style="padding:10px 8px;text-align:left">C.Custo</th><th style="padding:10px 8px;text-align:left">KM</th>'+
+    '<th style="padding:10px 8px;text-align:left">Início</th><th style="padding:10px 8px;text-align:left">Prazo</th>'+
+    '<th style="padding:10px 8px;text-align:left">Custo(R$)</th><th style="padding:10px 8px;text-align:left">Obs</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div>';
+}
+
+window.expXls = () => {
+  const dados=filtRel().map(v=>({'Placa':v.placa,'Status':lb(v.status),'Tipo Manut.':v.tipoManut||'','Vínculo':v.vinculo||'','C.Custo':v.cc||'','KM':v.km||'','Início':fmt(v.desde)||'','Prazo':fmt(v.prazo)||'','Custo(R$)':v.valor||'','Obs':v.obs||''}));
+  const ws=XLSX.utils.json_to_sheet(dados),wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Frota');XLSX.writeFile(wb,'relatorio_frota_erg.xlsx');
+};
+window.expPdf = () => {
+  const {jsPDF}=window.jspdf,doc=new jsPDF({orientation:'landscape'});
+  doc.setFontSize(14);doc.setTextColor(26,58,92);doc.text('ERG Engenharia — Relatório de Frotas',14,15);
+  doc.setFontSize(9);doc.setTextColor(100);doc.text('Gerado: '+new Date().toLocaleDateString('pt-BR'),14,22);
+  const cols=['Placa','Status','Tipo','Vínculo','CC','KM','Início','Prazo','Custo','Obs'];
+  const rows=filtRel().map(v=>[v.placa,lb(v.status),v.tipoManut||'',v.vinculo||'',v.cc||'',v.km||'',fmt(v.desde)||'',fmt(v.prazo)||'',v.valor?'R$'+v.valor:'',v.obs||'']);
+  let y=30;doc.setFillColor(26,58,92);doc.setTextColor(255);doc.rect(14,y-5,277,8,'F');
+  cols.forEach((c,i)=>doc.text(c,16+i*28,y));y+=8;doc.setTextColor(50);
+  rows.forEach((r,ri)=>{if(ri%2===0){doc.setFillColor(240,242,245);doc.rect(14,y-5,277,8,'F');}r.forEach((c,i)=>doc.text(String(c).substring(0,11),16+i*28,y));y+=8;if(y>190){doc.addPage();y=20;}});
+  doc.save('relatorio_frota_erg.pdf');
+};
+
+// ── MODAL ──────────────────────────────────────────────────────────
+function buildModal(v){
+  const st   = v?v.status:'disponivel';
+  const isM  = st==='manutencao', isMo=st==='mobilizacao', isA=st==='agendado';
+  const isL  = st==='locacao',    isS=st==='substituicao',  isC=st==='concluido';
+  const tEx  = st!=='disponivel';
+  const tLoc = isM||isA||isS||isC;
+  const tPr  = isM||isMo||isA||isS||isC;
+  const tLc  = isL||isC;
+  const tM   = v&&v.tipoManut?v.tipoManut:'';
+  const vin  = v&&v.vinculo?v.vinculo:'';
+
+  // helper: mostra/oculta bloco via style inline
+  const vis = cond => cond ? '' : 'display:none';
+
+  // Indicador dias restantes/atrasado para data de conclusão
+  function dcHint(dc, prazo){
+    if(!dc||!prazo) return '';
+    const ddc  = new Date(dc+'T00:00:00');
+    const dpr  = new Date(prazo+'T00:00:00');
+    const diff = Math.round((dpr-ddc)/86400000);
+    if(diff>0)  return '<div class="hint" style="color:#2d5a0e">✔ Concluído '+diff+' dia'+(diff!==1?'s':'')+' antes do prazo</div>';
+    if(diff===0)return '<div class="hint" style="color:#7a5200">✔ Concluído no prazo</div>';
+    return '<div class="hint" style="color:#A32D2D">⚠ Concluído '+Math.abs(diff)+' dia'+(Math.abs(diff)!==1?'s':'')+' após o prazo</div>';
+  }
+
+  return '<div class="md">'+
+    '<h2>'+(v?'Editar veículo':'Novo veículo')+'</h2>'+
+
+    // Placa
+    '<div class="fd"><label id="lbPl">'+(isL?'Veículo':'Placa / Identificação')+'</label>'+
+    '<input id="mPl" value="'+(v?v.placa:'')+'" placeholder="'+(isL?'Ex: Hilux':'Ex: QMY2A01')+'"/></div>'+
+
+    // Status
+    '<div class="fd"><label>Status</label><select id="mSt" onchange="window.toggleSt()">'+
+    '<option value="disponivel"'  +(st==='disponivel'  ?' selected':'')+'>Disponível</option>'+
+    '<option value="manutencao"'  +(isM?' selected':'')+'>Em manutenção</option>'+
+    '<option value="mobilizacao"' +(isMo?' selected':'')+'>Em mobilização</option>'+
+    '<option value="agendado"'    +(isA?' selected':'')+'>Manutenção agendada</option>'+
+    '<option value="locacao"'     +(isL?' selected':'')+'>Locação</option>'+
+    '<option value="substituicao"'+(isS?' selected':'')+'>Substituição</option>'+
+    '<option value="concluido"'   +(isC?' selected':'')+'>Concluído</option>'+
+    '</select></div>'+
+
+    // Tipo de manutenção (só manutenção)
+    '<div class="fd" id="blTM" style="'+vis(isM)+'"><label>Tipo de manutenção</label>'+
+    '<select id="mTM">'+
+    '<option value=""'          +(!tM?' selected':'')+'>Selecione...</option>'+
+    '<option value="Corretiva"' +(tM==='Corretiva'?' selected':'')+'>Corretiva</option>'+
+    '<option value="Preventiva"'+(tM==='Preventiva'?' selected':'')+'>Preventiva</option>'+
+    '</select></div>'+
+
+    // Campos comuns (todos exceto disponível)
+    '<div id="blComuns" style="'+vis(tEx)+'">'+
+    '<div class="tc2">'+
+    '<div class="fd"><label>Centro de Custo</label><input id="mCC" value="'+(v&&v.cc?v.cc:'')+'" placeholder="Ex: 5970"/></div>'+
+    '<div class="fd"><label>Tipo</label><select id="mVN">'+
+    '<option value=""'       +(!vin?' selected':'')+'>Selecione...</option>'+
+    '<option value="Próprio"'+(vin==='Próprio'?' selected':'')+'>Próprio</option>'+
+    '<option value="Locado"' +(vin==='Locado'?' selected':'')+'>Locado</option>'+
+    '</select></div></div>'+
+    '<div class="fd"><label>KM atual</label><input id="mKM" type="text" value="'+(v&&v.km?v.km:'')+'" placeholder="Ex: 85.000"/></div>'+
+    '<div class="fd"><label>E-mail(s) responsável</label>'+
+    '<input id="mEM" type="text" value="'+(v&&v.emailResponsavel?v.emailResponsavel:'')+'" placeholder="email1@erg.com; email2@erg.com"/>'+
+    '<div class="hint">Separe com ; ou ,</div></div>'+
+    '</div>'+
+
+    // Local
+    '<div class="fd" id="blLoc" style="'+vis(tLoc)+'"><label>Local</label>'+
+    '<input id="mLoc" value="'+(v&&v.local?v.local:'')+'" placeholder="Ex: Barão de Cocais"/></div>'+
+
+    // Datas início / prazo
+    '<div id="blPr" style="'+vis(tPr)+'">'+
+    '<div class="fd"><label>Data de início</label><input id="mDe" type="date" value="'+(v&&v.desde?v.desde:'')+'" /></div>'+
+    '<div class="fd"><label>Prazo de conclusão</label><input id="mPr" type="date" value="'+(v&&v.prazo?v.prazo:'')+'" /></div>'+
+    '</div>'+
+
+    // Data de conclusão (visível quando há prazo)
+    '<div id="blDC" style="'+vis(tPr)+'">'+
+    '<div class="fd"><label>Data de conclusão real</label>'+
+    '<input id="mDC" type="date" value="'+(v&&v.dataConclusao?v.dataConclusao:'')+'" onchange="window.atualizaDCHint()"/>'+
+    '<div id="dcHint">'+dcHint(v&&v.dataConclusao, v&&v.prazo)+'</div></div>'+
+    '</div>'+
+
+    // Locação / custo
+    '<div id="blLc" style="'+vis(tLc)+'">'+
+    '<div class="fd"><label>Custo Total (R$)</label><input id="mVal" type="text" value="'+(v&&v.valor?v.valor:'')+'" placeholder="Ex: 3.500,00"/></div>'+
+    '<div class="fd"><label>Padrão</label><select id="mPad">'+
+    '<option value=""'+(!v||!v.padrao?' selected':'')+'>Selecione...</option>'+
+    ['Vale','Samarco','Anglo','Arcelor','Usiminas','Sem Padronização'].map(p=>'<option value="'+p+'"'+(v&&v.padrao===p?' selected':'')+'>'+p+'</option>').join('')+
+    '</select></div></div>'+
+
+    // Data limite (só locação)
+    '<div class="fd" id="blDeLoc" style="'+vis(isL)+'"><label>Data Limite</label>'+
+    '<input id="mDeLoc" type="date" value="'+(v&&isL&&v.desde?v.desde:'')+'" /></div>'+
+
+    // Observação
+    '<div class="fd" id="blObs" style="'+vis(tEx)+'"><label>Observação</label>'+
+    '<input id="mObs" value="'+(v&&v.obs?v.obs:'')+'" placeholder="Ex: Troca de freio"/></div>'+
+
+    '<div class="mbt">'+
+    '<button class="bsv" onclick="window.salvar()">Salvar</button>'+
+    (v?'<button class="bdl" onclick="window.remover()">Remover</button>':'')+
+    '<button class="bcl" onclick="window.fecharModal()">Cancelar</button>'+
+    '</div></div>';
+}
+
+window.atualizaDCHint = () => {
+  const dc   = (document.getElementById('mDC')||{}).value||'';
+  const pr   = (document.getElementById('mPr')||{}).value||'';
+  const hint = document.getElementById('dcHint');
+  if(!hint) return;
+  if(!dc||!pr){ hint.innerHTML=''; return; }
+  const ddc  = new Date(dc+'T00:00:00');
+  const dpr  = new Date(pr+'T00:00:00');
+  const diff = Math.round((dpr-ddc)/86400000);
+  if(diff>0)  hint.innerHTML='<div class="hint" style="color:#2d5a0e">✔ Concluído '+diff+' dia'+(diff!==1?'s':'')+' antes do prazo</div>';
+  else if(diff===0) hint.innerHTML='<div class="hint" style="color:#7a5200">✔ Concluído no prazo</div>';
+  else hint.innerHTML='<div class="hint" style="color:#A32D2D">⚠ Concluído '+Math.abs(diff)+' dia'+(Math.abs(diff)!==1?'s':'')+' após o prazo</div>';
+};
+
+window.toggleSt = () => {
+  const st   = (document.getElementById('mSt')||{}).value||'disponivel';
+  const isM  = st==='manutencao', isMo=st==='mobilizacao', isA=st==='agendado';
+  const isL  = st==='locacao',    isS=st==='substituicao',  isC=st==='concluido';
+  const tEx  = st!=='disponivel';
+  const tLoc = isM||isA||isS||isC;
+  const tPr  = isM||isMo||isA||isS||isC;
+  const tLc  = isL||isC;
+
+  const show = (id,v) => { const el=document.getElementById(id); if(el) el.style.display=v?'':'none'; };
+  show('blComuns', tEx);
+  show('blTM',     isM);
+  show('blLoc',    tLoc);
+  show('blPr',     tPr);
+  show('blDC',     tPr);
+  show('blLc',     tLc);
+  show('blDeLoc',  isL);
+  show('blObs',    tEx);
+
+  // Atualiza label da placa
+  const lbPl = document.getElementById('lbPl');
+  if(lbPl) lbPl.textContent = isL ? 'Veículo' : 'Placa / Identificação';
+};
+
+window.fecharModal = () => { document.getElementById('modal').style.display='none'; };
+
+window.novoVeiculo = () => {
+  editId=null;
+  document.getElementById('modal').innerHTML='<div class="mb" onclick="if(event.target===this)window.fecharModal()">'+buildModal(null)+'</div>';
+  document.getElementById('modal').style.display='';
+};
+window.editarVeiculo = id => {
+  editId=id;
+  const v=veiculos.find(x=>x.id===id);
+  document.getElementById('modal').innerHTML='<div class="mb" onclick="if(event.target===this)window.fecharModal()">'+buildModal(v)+'</div>';
+  document.getElementById('modal').style.display='';
+};
+
+window.salvar = async () => {
+  const g  = id => document.getElementById(id);
+  const gv = (id,fb='') => { const el=g(id); return el?el.value.trim():fb; };
+
+  const placa  = gv('mPl').toUpperCase();
+  const status = gv('mSt');
+  if(!placa){ alert('Informe a identificação do veículo.'); return; }
+
+  const tEx = status!=='disponivel';
+  const cc               = tEx ? gv('mCC')  : '';
+  const vinculo          = tEx ? gv('mVN')  : '';
+  const km               = tEx ? gv('mKM')  : '';
+  const emailResponsavel = tEx ? gv('mEM')  : '';
+  const obs              = tEx ? gv('mObs') : '';
+  const tipoManut        = status==='manutencao' ? gv('mTM') : '';
+
+  let local='',desde='',prazo='',valor='',padrao='';
+  if(['manutencao','agendado','substituicao','concluido'].includes(status)) local=gv('mLoc');
+  if(['manutencao','mobilizacao','agendado','substituicao','concluido'].includes(status)){
+    desde=gv('mDe'); prazo=gv('mPr');
+  }
+  if(['locacao','concluido'].includes(status)){ valor=gv('mVal'); padrao=gv('mPad'); }
+  if(status==='locacao') desde=gv('mDeLoc');
+
+  const dataConclusao = gv('mDC');
+
+  const vAnt      = editId ? veiculos.find(x=>x.id===editId) : null;
+  const statusAnt = vAnt ? vAnt.status : null;
+  const agendando  = status==='agendado'  && statusAnt!=='agendado';
+  const concluindo = status==='concluido' && statusAnt!=='concluido';
+
+  try{
+    const data={placa,status,cc,vinculo,km,emailResponsavel,tipoManut,local,desde,prazo,obs,valor,padrao,dataConclusao};
+    let nId=editId;
+    if(editId){ await updateDoc(doc(db,'veiculos',editId),data); }
+    else       { const r=await addDoc(col,data); nId=r.id; }
+
+    const desc = status===statusAnt
+      ? 'Atualizado ('+lb(status)+')'
+      : 'Status: '+(statusAnt?lb(statusAnt)+' → ':'')+lb(status);
+    if(nId) await logHist(nId,desc);
+
+    // E-mail apenas ao agendar ou concluir manutenção
+    const deveEmail = emailResponsavel && (agendando || concluindo);
+    if(deveEmail){
+      const titulosEmail={agendado:'Manutenção agendada para o veículo:', concluido:'A manutenção foi concluída:'};
+      const subsEmail   ={agendado:'Manut. agendada', concluido:'Concluído'};
+      const corpo = mkMsg(data, titulosEmail[status]||'Status atualizado:');
+      const assunto = 'ERG Frotas — '+(subsEmail[status]||'Atualização')+': '+placa;
+      await mail(emailResponsavel, assunto, corpo);
+      if(concluindo) alert('✓ Concluído! E-mail enviado.');
+      if(agendando)  alert('✓ Manutenção agendada! E-mail enviado.');
+    }
+    window.fecharModal();
+  }catch(err){ alert('Erro: '+err.message); }
+};
+
+window.remover = async () => {
+  if(!confirm('Remover este veículo?'))return;
+  try{ await deleteDoc(doc(db,'veiculos',editId)); window.fecharModal(); }
+  catch(e){ alert('Erro: '+e.message); }
+};
+
+// ── FILTROS GLOBAIS ────────────────────────────────────────────────
+window.setFiltro = s => { filtro = filtro===s?null:s; render(); };
+window.buscar    = v => { busca=v.trim(); render(); };
+window.filtCC    = v => { fCC=v.trim(); renderDash(); };
+window.filtData  = () => { fDe=document.getElementById('fde').value; fAte=document.getElementById('fate').value; renderDash(); };
+window.limparDash = () => {
+  fCC=''; fDe=''; fAte='';
+  document.getElementById('fde').value='';
+  document.getElementById('fate').value='';
+  document.querySelector('[oninput="window.filtCC(this.value)"]').value='';
+  document.getElementById('dlabel').textContent='';
+  renderDash();
+};
+
+// ── FIREBASE ───────────────────────────────────────────────────────
+onSnapshot(col, snap=>{
+  veiculos=snap.docs.map(d=>({id:d.id,...d.data()}));
+  veiculos.sort((a,b)=>a.placa.localeCompare(b.placa));
+  render();
+  document.getElementById('sb').textContent='Atualizado · '+veiculos.length+' veículo'+(veiculos.length!==1?'s':'');
+}, e=>{ document.getElementById('sb').textContent='Erro: '+e.message; });
+
+document.getElementById('rst').addEventListener('change',renderRel);
+document.getElementById('rvn').addEventListener('change',renderRel);
+
+// ── RELÓGIO ────────────────────────────────────────────────────────
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').innerHTML=
+    n.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})+
+    '<br>'+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+tick(); setInterval(tick,60000);
+</script>
+
+<script>
+window.mudarAba = function(id,btn){
+  document.querySelectorAll('.aba').forEach(a=>a.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('aba-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='pos') setTimeout(()=>{ initMapa(); renderPos(); }, 150);
+};
+
+// ── POSICIONOGRAMA ─────────────────────────────────────────────────
+const colPos = collection(db,"posicionamentos");
+let posicionamentos=[], posEditId=null, posFiltro=null, posBusca="";
+let mapaPos=null, mapaMarkers=[];
+
+const SIP = {
+  disponivel:  {lb:'Disponível',     cls:'disp', badge:'pb-disp', cor:'#3aad5c'},
+  campo:       {lb:'Em campo',       cls:'camp', badge:'pb-camp', cor:'#e07020'},
+  deslocamento:{lb:'Em deslocamento',cls:'desl', badge:'pb-desl', cor:'#378ADD'},
+};
+const sip = s => SIP[s]||SIP.disponivel;
+
+// Inicializar mapa Leaflet (lazy — só quando a aba abrir)
+function initMapa(){
+  if(mapaPos) return;
+  mapaPos = L.map('mapa-pos').setView([-19.5, -43.7], 8);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors', maxZoom:19
+  }).addTo(mapaPos);
+}
+
+function criarIcone(cor){
+  return L.divIcon({
+    className:'',
+    html:'<div style="width:16px;height:16px;border-radius:50%;background:'+cor+';border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)"></div>',
+    iconSize:[16,16], iconAnchor:[8,8]
+  });
+}
+
+async function geocodificar(local){
+  if(!local) return null;
+  try{
+    const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(local+', Minas Gerais, Brasil'));
+    const d = await r.json();
+    if(d&&d[0]) return {lat:parseFloat(d[0].lat), lng:parseFloat(d[0].lon)};
+  }catch(e){}
+  return null;
+}
+
+function renderPos(){
+  const lista = posicionamentos.filter(p=>{
+    const ok = !posFiltro || p.status===posFiltro;
+    const bk = !posBusca  || (p.colaborador||'').toLowerCase().includes(posBusca) || (p.placa||'').toLowerCase().includes(posBusca);
+    return ok && bk;
+  });
+
+  // Cards
+  const grid = document.getElementById('pos-grid');
+  if(!grid) return;
+  if(!lista.length){ grid.innerHTML='<div class="ld" style="grid-column:1/-1">Nenhum colaborador encontrado.</div>'; }
+  else{
+    grid.innerHTML = lista.map(p=>{
+      const s = sip(p.status);
+      return '<div class="pos-card '+s.cls+'" onclick="window.editarPos(''+p.id+'')">'+
+        '<div class="pos-badge '+s.badge+'">'+s.lb+'</div>'+
+        '<div class="pos-nome">'+( p.colaborador||'—')+'</div>'+
+        '<div class="pos-placa">🚗 '+(p.placa||'—')+'</div>'+
+        '<div class="pos-info">'+
+        (p.demanda?'<div>Demanda: <span>'+p.demanda+'</span></div>':'')+
+        (p.cc?'<div>C. Custo: <span>'+p.cc+'</span></div>':'')+
+        (p.local?'<div>📍 <span>'+p.local+'</span></div>':'')+
+        '</div></div>';
+    }).join('');
+  }
+
+  const sb = document.getElementById('pos-sb');
+  if(sb) sb.textContent = lista.length+' colaborador'+(lista.length!==1?'es':'')+' exibido'+(lista.length!==1?'s':'');
+
+  // Atualizar pins no mapa
+  if(!mapaPos) return;
+  mapaMarkers.forEach(m=>m.remove());
+  mapaMarkers=[];
+  lista.forEach(p=>{
+    if(p.lat&&p.lng){
+      const s=sip(p.status);
+      const m=L.marker([p.lat,p.lng],{icon:criarIcone(s.cor)})
+        .addTo(mapaPos)
+        .bindPopup('<b>'+(p.colaborador||'—')+'</b><br>'+(p.placa||'')+'<br><i>'+s.lb+'</i>'+(p.demanda?'<br>'+p.demanda:'')+(p.local?'<br>📍 '+p.local:''));
+      mapaMarkers.push(m);
+    }
+  });
+}
+
+onSnapshot(colPos, snap=>{
+  posicionamentos = snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderPos();
+});
+
+window.buscarPos = v => { posBusca=v.trim().toLowerCase(); renderPos(); };
+window.filtPos   = (f,el) => {
+  posFiltro = f;
+  document.querySelectorAll('.pos-toolbar .bk').forEach(b=>b.classList.remove('on'));
+  if(el&&f) el.classList.add('on');
+  renderPos();
+};
+
+// Modal posicionograma
+function buildPosModal(p){
+  const st = p?p.status:'disponivel';
+  return '<div class="md">'+
+    '<h2>'+(p?'Editar colaborador':'Novo colaborador')+'</h2>'+
+    '<div class="fd"><label>Colaborador</label><input id="pNome" value="'+(p&&p.colaborador?p.colaborador:'')+'" placeholder="Nome completo"/></div>'+
+    '<div class="fd"><label>Placa / Identificação do veículo</label><input id="pPlaca" value="'+(p&&p.placa?p.placa:'')+'" placeholder="Ex: QMY2A01"/></div>'+
+    '<div class="fd"><label>Status</label><select id="pSt">'+
+    '<option value="disponivel"'  +(st==='disponivel'  ?' selected':'')+'>Disponível</option>'+
+    '<option value="campo"'       +(st==='campo'       ?' selected':'')+'>Em campo</option>'+
+    '<option value="deslocamento"'+(st==='deslocamento'?' selected':'')+'>Em deslocamento</option>'+
+    '</select></div>'+
+    '<div class="fd"><label>Demanda</label><input id="pDem" value="'+(p&&p.demanda?p.demanda:'')+'" placeholder="Ex: Topografia Itabira"/></div>'+
+    '<div class="fd"><label>Centro de Custo</label><input id="pCC" value="'+(p&&p.cc?p.cc:'')+'" placeholder="Ex: 5970"/></div>'+
+    '<div class="fd"><label>Localização (cidade ou endereço)</label>'+
+    '<input id="pLoc" value="'+(p&&p.local?p.local:'')+'" placeholder="Ex: Barão de Cocais, MG"/>'+
+    '<div class="hint">Será buscado no mapa automaticamente ao salvar</div></div>'+
+    '<div class="mbt">'+
+    '<button class="bsv" onclick="window.salvarPos()">Salvar</button>'+
+    (p?'<button class="bdl" onclick="window.removerPos()">Remover</button>':'')+
+    '<button class="bcl" onclick="window.fecharModal()">Cancelar</button>'+
+    '</div></div>';
+}
+
+window.novoPosicionamento = () => {
+  posEditId=null;
+  const m=document.getElementById('modal');
+  m.innerHTML='<div class="mb" onclick="if(event.target===this)window.fecharModal()">'+buildPosModal(null)+'</div>';
+  m.style.display='';
+};
+
+window.editarPos = id => {
+  posEditId=id;
+  const p=posicionamentos.find(x=>x.id===id);
+  if(!p)return;
+  const m=document.getElementById('modal');
+  m.innerHTML='<div class="mb" onclick="if(event.target===this)window.fecharModal()">'+buildPosModal(p)+'</div>';
+  m.style.display='';
+};
+
+window.salvarPos = async () => {
+  const gv = id => (document.getElementById(id)||{}).value||'';
+  const colaborador = gv('pNome').trim();
+  const placa       = gv('pPlaca').trim();
+  const status      = gv('pSt');
+  const demanda     = gv('pDem').trim();
+  const cc          = gv('pCC').trim();
+  const local       = gv('pLoc').trim();
+  if(!colaborador){ alert('Informe o nome do colaborador.'); return; }
+
+  // Geocodificar
+  let lat=null, lng=null;
+  if(local){
+    const coords = await geocodificar(local);
+    if(coords){ lat=coords.lat; lng=coords.lng; }
+  }
+
+  try{
+    const data={colaborador,placa,status,demanda,cc,local,lat,lng};
+    if(posEditId){ await updateDoc(doc(db,'posicionamentos',posEditId),data); }
+    else          { await addDoc(colPos,data); }
+    window.fecharModal();
+  }catch(err){ alert('Erro: '+err.message); }
+};
+
+window.removerPos = async () => {
+  if(!confirm('Remover este colaborador do posicionograma?')) return;
+  try{ await deleteDoc(doc(db,'posicionamentos',posEditId)); window.fecharModal(); }
+  catch(err){ alert('Erro: '+err.message); }
+};
+
+
+
+</script>
+</body>
+</html>
