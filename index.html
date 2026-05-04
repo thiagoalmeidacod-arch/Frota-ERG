@@ -3,68 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frota-ERG</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Assuming there is a CSS file to style the page -->
+    <title>Frota ERG</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js"></script>
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="#relatorio">Relatório</a></li>
-            <li><a href="#planvoo">Plano de Voo</a></li> <!-- New Plano de Voo tab -->
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Atividades</a></li>
+            <li><a href="#" id="planoVooTab">Plano de Voo</a></li>
         </ul>
     </nav>
 
-    <section id="planvoo">
+    <div id="planoVooSection">
         <h2>Plano de Voo</h2>
-        <input type="text" placeholder="Buscar por profissional" id="search" />
-        <div class="grid-layout">
-            <!-- Cards for atividades will be generated here -->
-        </div>
-        <button id="addActivity">Adicionar Atividade</button>
-    </section>
+        <input type="text" id="searchProfessional" placeholder="Buscar por profissional">
+        <select id="demandTypeFilter">
+            <option value="">Filtrar por tipo de demanda</option>
+            <option value="tipo1">Tipo 1</option>
+            <option value="tipo2">Tipo 2</option>
+        </select>
+        <div id="activitiesContainer"></div>
+        <button onclick="openModal()">Adicionar Atividade</button>
+    </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <div id="activityModal">
+        <h2 id="modalTitle">Adicionar Atividade</h2>
+        <form id="activityForm">
+            <label for="profissional">Profissional:</label>
+            <input type="text" id="profissional" required>
+            <label for="data">Data:</label>
+            <input type="date" id="data" required>
+            <label for="localPrevisto">Local Previsto:</label>
+            <input type="text" id="localPrevisto" required>
+            <label for="tipoDemanda">Tipo de Demanda:</label>
+            <select id="tipoDemanda">
+                <option value="">Selecionar</option>
+                <option value="tipo1">Tipo 1</option>
+                <option value="tipo2">Tipo 2</option>
+            </select>
+            <label for="horaSaida">Hora Saída:</label>
+            <input type="time" id="horaSaida" required>
+            <label for="horaRetorno">Hora Retorno:</label>
+            <input type="time" id="horaRetorno" required>
+            <label for="status">Status:</label>
+            <input type="text" id="status">
+            <label for="placaIdentificacao">Placa/Identificação:</label>
+            <input type="text" id="placaIdentificacao">
+            <button type="submit">Salvar</button>
+            <button type="button" onclick="closeModal()">Fechar</button>
+        </form>
+    </div>
+
     <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
+        // Firebase configuration
+        const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
             projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
             appId: "YOUR_APP_ID"
         };
-        // Initialize Firebase
+
         firebase.initializeApp(firebaseConfig);
-        var db = firebase.firestore();
+        const db = firebase.firestore();
 
-        // Functionality for managing atividades
-        document.getElementById('addActivity').onclick = function() {
-            const formData = {
-                profissional: document.querySelector('#professionField').value,
-                data: document.querySelector('#dateField').value,
-                local_previsao: document.querySelector('#localField').value,
-                tipo_demanda: document.querySelector('#demandTypeField').value,
-                hora_saida: document.querySelector('#departureHourField').value,
-                hora_retorno: document.querySelector('#returnHourField').value,
-                // tempo_total calculated later
-                status: document.querySelector('#statusField').value,
-                placa_identificacao: document.querySelector('#plateField').value
-            };
-
-            db.collection('atividades').add(formData).then(() => {
-                // Refresh or update grid layout
-            }).catch(error => console.error(error));
+        // CRUD Functions
+        const openModal = () => {
+            document.getElementById('activityModal').style.display = 'block';
         };
 
-        // Fetching atividades from Firestore for the grid layout
-        db.collection('atividades').get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const activity = doc.data();
-                // Display activity in grid layout
+        const closeModal = () => {
+            document.getElementById('activityModal').style.display = 'none';
+        };
+
+        document.getElementById('activityForm').onsubmit = (e) => {
+            e.preventDefault();
+            const profissional = document.getElementById('profissional').value;
+            const data = document.getElementById('data').value;
+            const localPrevisto = document.getElementById('localPrevisto').value;
+            const tipoDemanda = document.getElementById('tipoDemanda').value;
+            const horaSaida = document.getElementById('horaSaida').value;
+            const horaRetorno = document.getElementById('horaRetorno').value;
+            const status = document.getElementById('status').value;
+            const placaIdentificacao = document.getElementById('placaIdentificacao').value;
+            const tempoTotal = calculateTotalTime(horaSaida, horaRetorno);
+
+            db.collection('atividades').add({
+                profissional,
+                data,
+                localPrevisto,
+                tipoDemanda,
+                horaSaida,
+                horaRetorno,
+                tempoTotal,
+                status,
+                placaIdentificacao
+            }).then(() => {
+                closeModal();
+                alert('Atividade adicionada!');
+                // Refresh activities
             });
-        });
+        };
+
+        const calculateTotalTime = (horaSaida, horaRetorno) => {
+            // Logic to calculate total time
+        };
     </script>
 </body>
 </html>
